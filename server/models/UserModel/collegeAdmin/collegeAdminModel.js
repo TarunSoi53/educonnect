@@ -44,11 +44,6 @@ const CollegeAdminSchema = new mongoose.Schema({
      }]
 
 
-
-    
-    
-
-
 });
 
 const CollegeAdmin = mongoose.model("CollegeAdmin", CollegeAdminSchema);

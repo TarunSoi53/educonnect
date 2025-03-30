@@ -31,4 +31,4 @@ departmentHead:{
     
     const Sections = mongoose.model("Sections", sectionSchema);
     
-    export default Teacher;
+    export default Sections;

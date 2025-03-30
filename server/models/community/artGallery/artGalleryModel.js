@@ -25,24 +25,20 @@ const ArtGalleryPostSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    comments: {
-        type: [String],
-        default: []
-    },
+   
     date: {
         type: Date,
         default: Date.now
     },
-//  friendRequestsReceived: {
-//         type: [mongoose.Schema.Types.ObjectId], // Store IDs of users who have sent this user friend requests
-//         ref: 'User',
-//         default: []
-//     },
-//     friendRequestsSent: {
-//         type: [mongoose.Schema.Types.ObjectId], // Store IDs of users who have sent this user friend requests
-//         ref: 'User',
-//         default: []
-//     }
+    isApproved: {
+        type: Boolean,
+        default: false
+    },
+    collegeId: {
+        type: String,
+        required: true
+    },
+
 
 
 

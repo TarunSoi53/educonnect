@@ -30,29 +30,6 @@ departmentHead:{
   
     // Add more fields as needed
     
-   
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        minlength: 5,
-        maxlength: 255
-    },
-    password: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 1024
-    },
-    isHeadofDepartment: {
-        type: Boolean,
-        default: false
-    },
-    department: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Department",
-        required: true
-    },
     collegeId: {
         type: String,
         required: true
@@ -66,11 +43,19 @@ departmentHead:{
     subjects: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Subject"
-    }]
-    // Add more fields as needed
-
-    
-    
+    }],
+    Sections:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Sections"
+    }],
+    teachers:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Teacher"
+    }],
+ students:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student"
+    }],
 
 
 });
