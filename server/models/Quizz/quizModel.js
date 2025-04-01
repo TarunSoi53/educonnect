@@ -1,4 +1,4 @@
-import mongoose from "../config/index.js";
+import mongoose from "../../config/index.js";
 
 const quizzSchema = new mongoose.Schema({
     title: String,

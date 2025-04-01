@@ -1,42 +1,29 @@
-import mongoose from "../config/index.js";
-
+import mongoose from "../../config/index.js";
 
 const DepartmentSchema = new mongoose.Schema({
-    DepartmentName: {
+    name: {
         type: String,
         required: true,
-       
+      
+        trim: true
     },
 departmentHead:{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Teacher"
 },
+   
+    description: {
+        type: String,
+        trim: true
+    },
     collegeId: {
-        type: String,
-        required: true
-    },
-
-
-    departmentId:{
-        type: String,
-        required: true,
-        unique: true
-    },
-    departmentDescription: {
-        type: String,
-        required: true
-    },
-
-  
-    // Add more fields as needed
-    
-    collegeId: {
-        type: String,
-        required: true
-    },
+           type: mongoose.Schema.Types.ObjectId,
+               ref: "College"
+          
+       },
     phoneNumber: {
         type: String,
-        required: true,
+      
         minlength: 5,
         maxlength: 50
     },

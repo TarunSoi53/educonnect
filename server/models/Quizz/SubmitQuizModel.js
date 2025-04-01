@@ -1,4 +1,4 @@
-import mongoose from "../config/index.js";
+import mongoose from "../../config/index.js";
 
 const submitQuizSchema = new mongoose.Schema({
     quizId: { type: String, required: true },

@@ -1,17 +1,18 @@
-import mongoose from "../config/index.js";
+import mongoose from "../../config/index.js";
 
 const SubjectSchema = new mongoose.Schema({
-  collegeId: {
-    type: String,
-    required: true,
-  },
+ collegeId: {
+        type: mongoose.Schema.Types.ObjectId,
+            ref: "College"
+       
+    },
 
   departmentId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+            ref: "Department"
+       
+   
   },
-
-  // Add more fields as needed
-
   subjectName: {
     type: String,
     required: true,
@@ -42,6 +43,7 @@ const SubjectSchema = new mongoose.Schema({
       ref: "Topic",
     },
   ],
+  
 
   // Add more fields as needed
 });

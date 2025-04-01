@@ -1,13 +1,16 @@
-import mongoose from "../config/index.js";
+import mongoose from "../../config/index.js";
 
 
 const ArtGalleryPostSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 50
+    studentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student"
     },
+    teacherId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Teacher"
+    },
+    
     title: { type: String, required: true },
     postUrl: { type: String, required: true },
     description: { type: String, required: true },
@@ -34,10 +37,11 @@ const ArtGalleryPostSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    collegeId: {
-        type: String,
-        required: true
-    },
+     collegeId: {
+            type: mongoose.Schema.Types.ObjectId,
+                ref: "College"
+           
+        },
 
 
 

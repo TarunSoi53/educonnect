@@ -1,4 +1,4 @@
-import mongoose from "../config/index.js";
+import mongoose from "../../../config/index.js";
 
 
 const TeacherSchema = new mongoose.Schema({
@@ -32,7 +32,8 @@ const TeacherSchema = new mongoose.Schema({
         required: true
     },
     collegeId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "College",
         required: true
     },
     phoneNumber: {
@@ -48,9 +49,6 @@ const TeacherSchema = new mongoose.Schema({
     // Add more fields as needed
 
     
-    
-
-
 });
 
 const Teacher = mongoose.model("Teacher", TeacherSchema);

@@ -11,7 +11,7 @@ node_modules
 # Ignore all node_modules folders in the project
 
 node_modules
-
+.env
 dist
 dist-ssr
 *.local
