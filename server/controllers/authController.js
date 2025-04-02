@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import CollegeAdmin from '../models/UserModel/collegeAdmin/collegeAdminModel.js';
 import Teacher from '../models/UserModel/Teachers/teacherModel.js';
-import Student from '../models/UserModel/Students/studentModel.js';
+import Student from '../models/UserModel/Students/StudentModel.js';
 import Sections from '../models/Department/SectionModel.js';
 import Department from '../models/Department/Departmentmodel.js';
 
@@ -43,7 +43,7 @@ export const registerCollegeAdmin = async (req, res) => {
         });
 
         // Generate token
-        const token = generateToken(admin._id, 'admin');
+        const token = generateToken(admin._id, 'collegeAdmin');
         
 
         res.status(201).json({
@@ -200,13 +200,18 @@ export const login = async (req, res) => {
 
         // Generate token
         const token = generateToken(user._id, role);
+      user= {...user,"role":role}
+   
+        // Add role to user object
 
         res.json({
-            _id: user._id,
-            name: user.name || user.collegeName,
-            email: user.email,
-            role,
-            token
+            // _id: user._id,
+            // name: user.name || user.collegeName,
+            // email: user.email,
+            // role,
+            user,
+            token,
+          
         });
     } catch (error) {
         res.status(500).json({ message: error.message });

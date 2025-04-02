@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import CollegeAdmin from '../models/UserModel/collegeAdmin/collegeAdminModel.js';
 import Teacher from '../models/UserModel/Teachers/teacherModel.js';
-import Student from '../models/UserModel/Students/studentModel.js';
+import Student from '../models/UserModel/Students/StudentModel.js';
 
 export const authMiddleware = async (req, res, next) => {
     try {

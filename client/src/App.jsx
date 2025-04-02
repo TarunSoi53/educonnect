@@ -6,13 +6,13 @@ import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import ManageDepartments from './pages/ManageDepartments';
 import CreateCollege from './pages/CreateCollege';
+import useAuthStore  from './store/useAuthStore';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const token = localStorage.getItem('token');
+  const { isAuthenticated, user } = useAuthStore();
 
-  if (!token || !user) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
 
@@ -44,7 +44,7 @@ function App() {
         <Route
           path="/admin/manage-departments"
           element={
-            <ProtectedRoute allowedRoles={['admin']}>
+            <ProtectedRoute allowedRoles={['collegeAdmin']}>
               <ManageDepartments />
             </ProtectedRoute>
           }
@@ -52,9 +52,9 @@ function App() {
         <Route
           path="/admin/create-college"
           element={
-            <ProtectedRoute allowedRoles={['admin']}>
+           
               <CreateCollege />
-            </ProtectedRoute>
+            
           }
         />
 

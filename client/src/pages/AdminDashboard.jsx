@@ -23,10 +23,11 @@ const AdminDashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const collegeId = localStorage.getItem('collegeId');
+     
       
       // Fetch all dashboard data in one call
       const response = await api.get('/api/admin/dashboard');
+      console.log(response);
       const { departments, teachers, students } = response.data;
       
       setDepartments(departments);

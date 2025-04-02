@@ -31,15 +31,20 @@ const Login = () => {
       const response = await api.post('/api/auth/login', formData);
       console.log('Login response:', response.data); // Debug log
 
-      const { token, role} = response.data;
+      const { token, user } = response.data;
 
-      // Store user data and token
-      login(token,role);
-      console.log('Auth state after login:', { token, role }); // Debug log
+      // Store user data and token in Zustand store
+      console.log(token,user)
+      login(token, user);
+      //add the token to local storage
+      localStorage.setItem('token', token);
+      console.log('Auth state after login:', { token, user }); // Debug log
+      console.log('user.role',user.role)
 
-      // Redirect based on role
-      switch (role) {
-        case "collegeAdmin":
+      //Redirect based on role
+      switch (user.role) {
+        case 'collegeAdmin':
+          console.log("user.role")
           navigate('/admin/dashboard');
           break;
         case 'teacher':
@@ -47,10 +52,9 @@ const Login = () => {
           break;
         case 'student':
           navigate('/student/dashboard');
-          break;
-        default:
-          navigate('/');
-      }
+          break;}
+       
+      
     } catch (err) {
       console.error('Login error:', err); // Debug log
       if (err.response) {

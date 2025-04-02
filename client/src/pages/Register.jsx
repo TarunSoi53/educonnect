@@ -61,7 +61,8 @@ const Register = () => {
   };
 
   const fetchSections = async (departmentId) => {
-    try {
+    try { 
+      
       const { data } = await api.get(`/api/sections/${departmentId}/sections`);
       setSections(data);
       setFormData(prev => ({ ...prev, section: '' }));
@@ -95,6 +96,10 @@ const Register = () => {
             password: formData.password,
             phoneNumber: formData.phoneNumber,
           };
+          const response = await api.post(endpoint, payload);
+          //add response.token to localStorage
+          localStorage.setItem('token', response.data.token);
+          navigate('/admin/create-college');
           break;
         case 'teacher':
           endpoint = '/api/auth/register/teacher';
@@ -107,6 +112,8 @@ const Register = () => {
             collegeId: formData.collegeId,
             phoneNumber: formData.phoneNumber,
           };
+         await api.post(endpoint, payload);
+          navigate('/login');
           break;
         case 'student':
           endpoint = '/api/auth/register/student';
@@ -120,13 +127,18 @@ const Register = () => {
             section: formData.section,
             rollNumber: formData.rollNumber,
           };
+           await api.post(endpoint, payload);
+          navigate('/login');
           break;
         default:
           throw new Error('Please select a role');
       }
 
-      const { data } = await api.post(endpoint, payload);
-      navigate('/login');
+    
+      
+ 
+    
+    
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {

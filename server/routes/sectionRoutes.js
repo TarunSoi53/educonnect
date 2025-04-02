@@ -11,8 +11,7 @@ import {
 const router = express.Router();
 
 // All routes are protected and only accessible by college admin
-router.use(authMiddleware);
-router.use(roleMiddleware(['collegeAdmin']));
+
 
 // Section routes
 router.post('/:departmentId/addsections', 

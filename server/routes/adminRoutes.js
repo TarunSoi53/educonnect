@@ -1,14 +1,13 @@
 import express from 'express';
-import auth from '../middleware/auth.js';
-import Department from '../models/Department.js';
-import Section from '../models/Section.js';
-import Teacher from '../models/Teacher.js';
-import Student from '../models/Student.js';
-
+import { authMiddleware } from '../middleware/authMiddleware.js';
+import Department from '../models//Department/Departmentmodel.js';
+import Section from '../models/Department/SectionModel.js';
+import Teacher from '../models/UserModel/Teachers/teacherModel.js';
+import Student from '../models/UserModel/Students/StudentModel.js';
 const router = express.Router();
 
 // Get dashboard data
-router.get('/dashboard', auth, async (req, res) => {
+router.get('/dashboard', authMiddleware, async (req, res) => {
   try {
     const collegeId = req.user.college;
 
@@ -44,7 +43,7 @@ router.get('/dashboard', auth, async (req, res) => {
 });
 
 // Get college departments
-router.get('/college/:collegeId/departments', auth, async (req, res) => {
+router.get('/college/:collegeId/departments', authMiddleware, async (req, res) => {
   try {
     const departments = await Department.find({ college: req.params.collegeId });
     res.json(departments);
@@ -54,7 +53,7 @@ router.get('/college/:collegeId/departments', auth, async (req, res) => {
 });
 
 // Get college teachers
-router.get('/college/:collegeId/teachers', auth, async (req, res) => {
+router.get('/college/:collegeId/teachers', authMiddleware, async (req, res) => {
   try {
     const teachers = await Teacher.find({ college: req.params.collegeId });
     res.json(teachers);
@@ -64,7 +63,7 @@ router.get('/college/:collegeId/teachers', auth, async (req, res) => {
 });
 
 // Get college students
-router.get('/college/:collegeId/students', auth, async (req, res) => {
+router.get('/college/:collegeId/students', authMiddleware, async (req, res) => {
   try {
     const students = await Student.find({ college: req.params.collegeId });
     res.json(students);
@@ -74,7 +73,7 @@ router.get('/college/:collegeId/students', auth, async (req, res) => {
 });
 
 // Get department sections
-router.get('/department/:departmentId/sections', auth, async (req, res) => {
+router.get('/department/:departmentId/sections', authMiddleware, async (req, res) => {
   try {
     const sections = await Section.find({ department: req.params.departmentId });
     res.json(sections);
