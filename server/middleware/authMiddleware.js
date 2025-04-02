@@ -40,6 +40,7 @@ export const authMiddleware = async (req, res, next) => {
 
         req.user = user;
         req.user.role = decoded.role;
+        console.log(req)
         
         next();
     } catch (error) {

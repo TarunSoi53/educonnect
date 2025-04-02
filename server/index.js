@@ -9,6 +9,7 @@ import sectionRoutes from './routes/sectionRoutes.js';
 import collegeRoutes from './routes/collegeRoutes.js';
 import teacherRoutes from './routes/teacherRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
+// import quizRoutes from './routes/quizRoutes.js';
 
 dotenv.config();
 
@@ -33,6 +34,9 @@ app.use('/api/colleges', collegeRoutes);
 
 app.use('/api/teachers', teacherRoutes);
 app.use('/api/students', studentRoutes);
+
+// app.use('/api/quizzes', quizRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

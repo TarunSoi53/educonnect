@@ -97,8 +97,10 @@ const Register = () => {
             phoneNumber: formData.phoneNumber,
           };
           const response = await api.post(endpoint, payload);
+        //  await api.post(endpoint, payload);
           //add response.token to localStorage
           localStorage.setItem('token', response.data.token);
+         
           navigate('/admin/create-college');
           break;
         case 'teacher':

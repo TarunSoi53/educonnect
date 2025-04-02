@@ -6,7 +6,11 @@ import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import ManageDepartments from './pages/ManageDepartments';
 import CreateCollege from './pages/CreateCollege';
-import useAuthStore  from './store/useAuthStore';
+import TeacherDashboard from './pages/TeacherDashboard';
+import StudentDashboard from './pages/StudentDashboard';
+import useAuthStore from './store/useAuthStore';
+import { initializeAuthState } from './utils/auth';
+import { useEffect } from 'react';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -24,6 +28,10 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 };
 
 function App() {
+  const { login, logout } = useAuthStore();
+  useEffect(() => {
+    initializeAuthState(login, logout);
+  }, [login, logout]);
   return (
     <Router>
       <Routes>
@@ -32,7 +40,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        
+        {/* Admin Routes */}
         <Route
           path="/admin/dashboard"
           element={
@@ -54,7 +62,27 @@ function App() {
           element={
            
               <CreateCollege />
-            
+           
+          }
+        />
+
+        {/* Teacher Routes */}
+        <Route
+          path="/teacher/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['teacher']}>
+              <TeacherDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Student Routes */}
+        <Route
+          path="/student/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentDashboard />
+            </ProtectedRoute>
           }
         />
 

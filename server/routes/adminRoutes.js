@@ -9,16 +9,16 @@ const router = express.Router();
 // Get dashboard data
 router.get('/dashboard', authMiddleware, async (req, res) => {
   try {
-    const collegeId = req.user.college;
+    const collegeId = req.user.collegeId;
 
     // Get departments
-    const departments = await Department.find({ college: collegeId });
+    const departments = await Department.find({ collegeId: collegeId });
     
     // Get teachers
-    const teachers = await Teacher.find({ college: collegeId });
+    const teachers = await Teacher.find({ collegeId: collegeId });
     
     // Get students
-    const students = await Student.find({ college: collegeId });
+    const students = await Student.find({ collegeId: collegeId }).populate('department', 'name').populate('section', 'name');
 
     // Get sections for each department
     const departmentsWithSections = await Promise.all(

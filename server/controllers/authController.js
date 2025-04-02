@@ -172,6 +172,8 @@ export const registerStudent = async (req, res) => {
 // Login for all roles
 export const login = async (req, res) => {
     try {
+         
+        
         const { email, password } = req.body;
 
         // Check all user types
@@ -217,3 +219,8 @@ export const login = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }; 
+export const verify= (req, res) => {
+    console.log("request")
+    console.log(req.role)
+    res.json( req.user);
+}

@@ -3,8 +3,10 @@ import {
     registerCollegeAdmin,
     registerTeacher,
     registerStudent,
-    login
+    login,
+    verify
 } from '../controllers/authController.js';
+import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -15,5 +17,6 @@ router.post('/register/student', registerStudent);
 
 // Login route (for all roles)
 router.post('/login', login);
+router.get('/verify',authMiddleware,verify)
 
 export default router; 

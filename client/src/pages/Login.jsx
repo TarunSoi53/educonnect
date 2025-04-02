@@ -37,7 +37,9 @@ const Login = () => {
       console.log(token,user)
       login(token, user);
       //add the token to local storage
+      console.log("hello local")
       localStorage.setItem('token', token);
+      console.log("local")
       console.log('Auth state after login:', { token, user }); // Debug log
       console.log('user.role',user.role)
 

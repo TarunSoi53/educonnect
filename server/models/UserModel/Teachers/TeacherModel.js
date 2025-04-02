@@ -1,4 +1,5 @@
 import mongoose from "../../../config/index.js";
+import Student from "../Students/StudentModel.js";
 
 
 const TeacherSchema = new mongoose.Schema({
@@ -45,6 +46,12 @@ const TeacherSchema = new mongoose.Schema({
     subjects: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Subject"
+    }],
+    role:[{
+        type: String,
+        enum: ['teacher', 'collegeAdmin', 'student'],
+
+       
     }]
     // Add more fields as needed
 
