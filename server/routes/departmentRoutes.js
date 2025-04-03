@@ -45,20 +45,20 @@ router.delete('/:id',
 );
 
 // Department head assignment
-router.post('/:id/head', 
+router.post('/:departmentId/head', 
     authMiddleware, 
     roleMiddleware(['collegeAdmin']), 
     assignDepartmentHead
 );
 
 // Teacher management
-router.post('/:id/teachers', 
+router.post('/:departmentId/teachers', 
     authMiddleware, 
     roleMiddleware(['collegeAdmin']), 
     addTeacherToDepartment
 );
 
-router.delete('/:id/teachers/:teacherId', 
+router.delete('/:departmentId/teachers/:teacherId', 
     authMiddleware, 
     roleMiddleware(['collegeAdmin']), 
     removeTeacherFromDepartment
