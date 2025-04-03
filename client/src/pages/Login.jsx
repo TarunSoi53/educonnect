@@ -31,7 +31,9 @@ const Login = () => {
       const response = await api.post('/api/auth/login', formData);
       console.log('Login response:', response.data); // Debug log
 
+
       const { token, user } = response.data;
+      console.log(user)
 
       // Store user data and token in Zustand store
       console.log(token,user)
@@ -46,7 +48,6 @@ const Login = () => {
       //Redirect based on role
       switch (user.role) {
         case 'collegeAdmin':
-          console.log("user.role")
           navigate('/admin/dashboard');
           break;
         case 'teacher':

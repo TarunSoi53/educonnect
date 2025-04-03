@@ -8,6 +8,7 @@ import ManageDepartments from './pages/ManageDepartments';
 import CreateCollege from './pages/CreateCollege';
 import TeacherDashboard from './pages/TeacherDashboard';
 import StudentDashboard from './pages/StudentDashboard';
+import Community from './pages/Community';
 import useAuthStore from './store/useAuthStore';
 import { initializeAuthState } from './utils/auth';
 import { useEffect } from 'react';
@@ -15,11 +16,16 @@ import { useEffect } from 'react';
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, user } = useAuthStore();
+  console.log("here")
+  console.log("user",user)
+  console.log("allowedRoles",allowedRoles)
+
 
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
 
+ 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     return <Navigate to="/" />;
   }
@@ -44,7 +50,7 @@ function App() {
         <Route
           path="/admin/dashboard"
           element={
-            <ProtectedRoute allowedRoles={["collegeAdmin"]}>
+            <ProtectedRoute allowedRoles={['collegeAdmin']}>
               <AdminDashboard />
             </ProtectedRoute>
           }
@@ -82,6 +88,16 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['student']}>
               <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Community Route */}
+        <Route
+          path="/community"
+          element={
+            <ProtectedRoute allowedRoles={['collegeAdmin', 'teacher', 'student']}>
+              <Community />
             </ProtectedRoute>
           }
         />

@@ -9,6 +9,8 @@ import sectionRoutes from './routes/sectionRoutes.js';
 import collegeRoutes from './routes/collegeRoutes.js';
 import teacherRoutes from './routes/teacherRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
+import communityRoutes from './routes/communityRoutes.js';
+
 // import quizRoutes from './routes/quizRoutes.js';
 
 dotenv.config();
@@ -34,6 +36,7 @@ app.use('/api/colleges', collegeRoutes);
 
 app.use('/api/teachers', teacherRoutes);
 app.use('/api/students', studentRoutes);
+app.use('/api/communityPages', communityRoutes);
 
 // app.use('/api/quizzes', quizRoutes);
 
@@ -43,6 +46,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Something went wrong!' });
 });
+// Create uploads directory if it doesn't exist
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

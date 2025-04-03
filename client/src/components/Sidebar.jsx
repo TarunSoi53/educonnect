@@ -64,6 +64,15 @@ const Sidebar = ({ collegeName }) => {
             <FaUserGraduate />
             <span>Students</span>
           </Link>
+          <Link
+            to="/community"
+            className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+              isActive('/community') ? 'bg-gray-700' : ''
+            }`}
+          >
+            <FaUsers />
+            <span>community</span>
+          </Link>
         </nav>
       </div>
 

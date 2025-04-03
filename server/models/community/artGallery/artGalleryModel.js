@@ -1,4 +1,4 @@
-import mongoose from "../../config/index.js";
+import mongoose from "../../../config/index.js";
 
 
 const ArtGalleryPostSchema = new mongoose.Schema({
@@ -33,10 +33,12 @@ const ArtGalleryPostSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    isApproved: {
-        type: Boolean,
-        default: false
-    },
+    status: {
+        type: String,
+        required: true,
+        enum: ['pending', 'approved', 'rejected'],
+        default: 'pending'
+      },
      collegeId: {
             type: mongoose.Schema.Types.ObjectId,
                 ref: "College"
@@ -44,10 +46,8 @@ const ArtGalleryPostSchema = new mongoose.Schema({
         },
 
 
-
-
 });
 
-const ArtGalleryPost = mongoose.model("ArtGalleryPost", ArtGalleryPostSchema);
+const ArtGallery = mongoose.model("ArtGalleryPost", ArtGalleryPostSchema);
 
-export default ArtGalleryPost;
+export default ArtGallery;

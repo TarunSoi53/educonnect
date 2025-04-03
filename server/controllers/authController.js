@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import CollegeAdmin from '../models/UserModel/collegeAdmin/collegeAdminModel.js';
 import Teacher from '../models/UserModel/Teachers/teacherModel.js';
@@ -219,6 +219,7 @@ export const login = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }; 
+  
 export const verify= (req, res) => {
     console.log("request")
     console.log(req.role)
