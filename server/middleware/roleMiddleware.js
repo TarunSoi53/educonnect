@@ -6,7 +6,10 @@ export const roleMiddleware = (allowedRoles) => {
             }
 
             const userRole = req.user.role;
-            if (!allowedRoles.includes(userRole)) {
+            console.log("userRole for adding the subjects", userRole);
+            console.log("allowedRoles", allowedRoles);
+           
+            if (! allowedRoles.includes(userRole)) {
                 return res.status(403).json({ 
                     message: 'Access denied. Insufficient permissions.' 
                 });

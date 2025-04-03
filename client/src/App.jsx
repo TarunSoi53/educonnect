@@ -12,6 +12,9 @@ import Community from './pages/Community';
 import useAuthStore from './store/useAuthStore';
 import { initializeAuthState } from './utils/auth';
 import { useEffect } from 'react';
+import TeacherManagement from './pages/admin/TeacherManagement';
+import Classes from './pages/teacher/Classes';
+import Quizzes from './pages/teacher/quizzes';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -64,6 +67,14 @@ function App() {
           }
         />
         <Route
+          path="/admin/teachers"
+          element={
+            <ProtectedRoute allowedRoles={['collegeAdmin']}>
+              <TeacherManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/create-college"
           element={
            
@@ -78,6 +89,14 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['teacher']}>
               <TeacherDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teacher/classes"
+          element={
+            <ProtectedRoute allowedRoles={['teacher']}>
+              <Classes />
             </ProtectedRoute>
           }
         />
@@ -98,6 +117,14 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['collegeAdmin', 'teacher', 'student']}>
               <Community />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teacher/quiz"
+          element={
+            <ProtectedRoute allowedRoles={['collegeAdmin', 'teacher', 'student']}>
+              <Quizzes />
             </ProtectedRoute>
           }
         />

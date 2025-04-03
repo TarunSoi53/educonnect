@@ -45,7 +45,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
 // Get college departments
 router.get('/college/:collegeId/departments', authMiddleware, async (req, res) => {
   try {
-    const departments = await Department.find({ college: req.params.collegeId });
+    const departments = await Department.find({ collegeId: req.params.collegeId });
     res.json(departments);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching departments' });
@@ -55,7 +55,7 @@ router.get('/college/:collegeId/departments', authMiddleware, async (req, res) =
 // Get college teachers
 router.get('/college/:collegeId/teachers', authMiddleware, async (req, res) => {
   try {
-    const teachers = await Teacher.find({ college: req.params.collegeId });
+    const teachers = await Teacher.find({ collegeId: req.params.collegeId });
     res.json(teachers);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching teachers' });
@@ -65,7 +65,7 @@ router.get('/college/:collegeId/teachers', authMiddleware, async (req, res) => {
 // Get college students
 router.get('/college/:collegeId/students', authMiddleware, async (req, res) => {
   try {
-    const students = await Student.find({ college: req.params.collegeId });
+    const students = await Student.find({ collegeId: req.params.collegeId });
     res.json(students);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching students' });

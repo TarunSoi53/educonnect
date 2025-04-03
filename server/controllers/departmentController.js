@@ -178,13 +178,15 @@ export const deleteDepartment = async (req, res) => {
 // Assign department head
 export const assignDepartmentHead = async (req, res) => {
     try {
-        const { departmentId, teacherId } = req.body;
-
+        const { teacherId } = req.body;
+        const departmentId = req.params.departmentId;
+console.log("departmentId", departmentId);
         // Verify department exists and belongs to the college
         const department = await Department.findOne({ 
             _id: departmentId,
-            collegeId: req.user.collegeId 
+            // collegeId: req.user.collegeId 
         });
+        console.log(department);
 
         if (!department) {
             return res.status(404).json({ message: 'Department not found' });

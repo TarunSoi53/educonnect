@@ -84,7 +84,7 @@ const Sidebar = ({ collegeName }) => {
         return (
           <>
             <Link
-              to="/teacher"
+              to="/teacher/dashboard"
               className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
                 isActive('/teacher') ? 'bg-gray-700' : ''
               }`}

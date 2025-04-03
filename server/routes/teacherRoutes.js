@@ -43,11 +43,11 @@ router.put('/profile', authMiddleware, async (req, res) => {
 });
 
 // Get all teachers in a department
-router.get('/department/:departmentId', authMiddleware, async (req, res) => {
+router.get('/department/:departmentId/', authMiddleware, async (req, res) => {
   try {
-    const teachers = await Teacher.find({ department: req.params.departmentId })
-      .populate('department', 'name')
-      .populate('college', 'name');
+    const teachers = await Teacher.find({ department: req.params.departmentId });
+      // .populate('department', 'name')
+      // .populate('college', 'name');
     
     res.json(teachers);
   } catch (error) {

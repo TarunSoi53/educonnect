@@ -6,4 +6,5 @@ const quizQuestionSchema = new mongoose.Schema({
     correctAnswer: String,
    
 });
-const QuizQuestion = mongoose.model('QuizQuestion', quizQuestionSchema);
+ const QuizQuestion = mongoose.model('QuizQuestion', quizQuestionSchema);
+ export default QuizQuestion;
