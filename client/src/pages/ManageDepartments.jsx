@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaTrash, FaEdit, FaUsers, FaArrowLeft } from 'react-icons/fa';
 import api from '../utils/api';
+import DashboardLayout from '../components/DashboardLayout';
 
 const ManageDepartments = () => {
   const navigate = useNavigate();
@@ -114,6 +115,7 @@ const ManageDepartments = () => {
   };
 
   return (
+    <DashboardLayout>
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white shadow sm:rounded-lg">
@@ -304,6 +306,7 @@ const ManageDepartments = () => {
         </div>
       )}
     </div>
+    </DashboardLayout>
   );
 };
 

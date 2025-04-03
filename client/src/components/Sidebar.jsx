@@ -1,6 +1,18 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaUsers, FaChalkboardTeacher, FaUserGraduate, FaUserCircle, FaSignOutAlt, FaBuilding } from 'react-icons/fa';
+import { 
+  FaHome, 
+  FaUsers, 
+  FaChalkboardTeacher, 
+  FaUserGraduate, 
+  FaUserCircle, 
+  FaSignOutAlt, 
+  FaBuilding,
+  FaVideo,
+  FaComments,
+  FaQuestionCircle,
+  FaUsersCog
+} from 'react-icons/fa';
 import useAuthStore from '../store/useAuthStore';
 
 const Sidebar = ({ collegeName }) => {
@@ -13,6 +25,157 @@ const Sidebar = ({ collegeName }) => {
 
   const handleLogout = () => {
     logout();
+  };
+
+  const renderNavigationItems = () => {
+    switch (user?.role) {
+      case 'collegeAdmin':
+        return (
+          <>
+            <Link
+              to="/admin/dashboard"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/admin') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaHome />
+              <span>Dashboard</span>
+            </Link>
+            <Link
+              to="/admin/manage-departments"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/admin/manage-departments') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaUsers />
+              <span>Departments</span>
+            </Link>
+            <Link
+              to="/admin/teachers"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/admin/teachers') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaChalkboardTeacher />
+              <span>Teachers</span>
+            </Link>
+            <Link
+              to="/admin/students"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/admin/students') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaUserGraduate />
+              <span>Students</span>
+            </Link>
+            <Link
+              to="/community"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/community') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaUsersCog />
+              <span>Community</span>
+            </Link>
+          </>
+        );
+
+      case 'teacher':
+        return (
+          <>
+            <Link
+              to="/teacher"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/teacher') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaHome />
+              <span>Dashboard</span>
+            </Link>
+            <Link
+              to="/teacher/classes"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/teacher/classes') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaVideo />
+              <span>Classes</span>
+            </Link>
+            <Link
+              to="/teacher/quiz"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/teacher/quiz') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaQuestionCircle />
+              <span>Quiz Control</span>
+            </Link>
+            <Link
+              to="/teacher/chat-groups"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/teacher/chat-groups') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaComments />
+              <span>Chat Groups</span>
+            </Link>
+            <Link
+              to="/community"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/community') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaUsersCog />
+              <span>Community</span>
+            </Link>
+          </>
+        );
+
+      case 'student':
+        return (
+          <>
+            <Link
+              to="/student"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/student') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaHome />
+              <span>Dashboard</span>
+            </Link>
+            <Link
+              to="/student/live-classes"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/student/live-classes') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaVideo />
+              <span>Live Classes</span>
+            </Link>
+            <Link
+              to="/student/class-groups"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/student/class-groups') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaComments />
+              <span>Class Groups</span>
+            </Link>
+            <Link
+              to="/community"
+              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+                isActive('/community') ? 'bg-gray-700' : ''
+              }`}
+            >
+              <FaUsersCog />
+              <span>Community</span>
+            </Link>
+          </>
+        );
+
+      default:
+        return null;
+    }
   };
 
   return (
@@ -28,51 +191,7 @@ const Sidebar = ({ collegeName }) => {
       {/* Navigation Section */}
       <div className="flex-1 p-4">
         <nav className="space-y-2">
-          <Link
-            to="/admin/dashboard"
-            className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-              isActive('/admin/dashboard') ? 'bg-gray-700' : ''
-            }`}
-          >
-            <FaHome />
-            <span>Dashboard</span>
-          </Link>
-          <Link
-            to="/admin/manage-departments"
-            className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-              isActive('/admin/manage-departments') ? 'bg-gray-700' : ''
-            }`}
-          >
-            <FaUsers />
-            <span>Departments</span>
-          </Link>
-          <Link
-            to="/admin/teachers"
-            className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-              isActive('/admin/teachers') ? 'bg-gray-700' : ''
-            }`}
-          >
-            <FaChalkboardTeacher />
-            <span>Teachers</span>
-          </Link>
-          <Link
-            to="/admin/students"
-            className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-              isActive('/admin/students') ? 'bg-gray-700' : ''
-            }`}
-          >
-            <FaUserGraduate />
-            <span>Students</span>
-          </Link>
-          <Link
-            to="/community"
-            className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-              isActive('/community') ? 'bg-gray-700' : ''
-            }`}
-          >
-            <FaUsers />
-            <span>community</span>
-          </Link>
+          {renderNavigationItems()}
         </nav>
       </div>
 
