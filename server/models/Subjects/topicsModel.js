@@ -6,9 +6,13 @@ const TopicSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Subjects",
   },
-  departmentId: {
+  department: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Department",
+  },
+  section: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Section",
   },
   TeacherId: {
     type: mongoose.Schema.Types.ObjectId,

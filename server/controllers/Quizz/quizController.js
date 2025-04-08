@@ -10,7 +10,7 @@ export const getQuizStats = async (req, res) => {
 
     const [totalQuizzes, totalQuestions, submissions] = await Promise.all([
       Quiz.countDocuments({ teacher: teacherId }),
-      QuizQuestion.countDocuments({ quizId: { $in: await Quiz.find({ teacher: teacherId }).distinct('_id') } }),
+      QuizQuestion.countDocuments({ quizId: { $in: await Quiz.find({ teacherId: teacherId }).distinct('_id') } }),
       SubmitQuiz.find({ quizId: { $in: await Quiz.find({ teacher: teacherId }).distinct('_id') } })
     ]);
 
@@ -32,25 +32,27 @@ export const getQuizStats = async (req, res) => {
 // Get all quizzes for a teacher
 export const getTeacherQuizzes = async (req, res) => {
   try {
-    const { teacherId } = req.params;
-    const { department, section } = req.query;
+    const { teacherId } = req.user._id;
+    console.log(teacherId);
+    //  const { department, section } = req.query;
 
-    let query = { teacher: teacherId };
+    // // let query = { teacher: teacherId };
 
-    if (department) {
-      const subjects = await Subject.find({ department });
-      query.subjectId = { $in: subjects.map(s => s._id) };
-    }
+    // // if (department) {
+    // //   const subjects = await Subject.find({ department });
+    // //   query.subjectId = { $in: subjects.map(s => s._id) };
+    // // }
 
-    if (section) {
-      const subjects = await Subject.find({ section });
-      query.subjectId = { $in: subjects.map(s => s._id) };
-    }
+    // // if (section) {
+    // //   const subjects = await Subject.find({ section });
+    // //   query.subjectId = { $in: subjects.map(s => s._id) };
+    // // }
 
-    const quizzes = await Quiz.find(query)
+    const quizzes = await Quiz.find(teacherId)
       .sort({ createdAt: -1 })
-      .populate('subjectId', 'name code')
+      .populate('subjectId', 'name')
       .populate('topic', 'name');
+    
 
     res.json(quizzes);
   } catch (error) {
@@ -82,3 +84,26 @@ export const getQuizDetails = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 }; 
+export const startQuiz = async (req, res) => {
+  try {
+    const { quizId } = req.params;
+
+    const quiz = await Quiz.findById(quizId)
+      .populate('subjectId', 'name code')
+      .populate('topic', 'name');
+
+    if (!quiz) {
+      return res.status(404).json({ message: 'Quiz not found' });
+    }
+
+    const questions = await QuizQuestion.find({ quizId })
+      .sort('questionNo');
+
+    res.json({
+      ...quiz.toObject(),
+      quizQuestions: questions
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

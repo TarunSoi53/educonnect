@@ -10,10 +10,15 @@ const topicSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  
   subject: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Subject',
     required: true
+  },
+  quizId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Quiz",
   },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,

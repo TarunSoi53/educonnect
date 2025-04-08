@@ -57,7 +57,7 @@ router.post('/art-gallery/upload', authMiddleware, upload.single('image'), async
 
     const artItem = new ArtGallery({
       title: req.body.title,
-      description: req.body.description,
+      description: req.body.description, 
       imageUrl: `/uploads/art-gallery/${req.file.filename}`,
       category: req.body.category,
       uploadedBy: req.user._id,

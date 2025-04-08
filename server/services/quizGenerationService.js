@@ -2,10 +2,12 @@ import { GoogleGenAI } from "@google/genai";
 import util from 'util';
 import Quiz from '../models/Quizz/quizModel.js';
 import QuizQuestion from '../models/Quizz/QuizQuestionModel.js';
+import Subject from '../models/Subject/SubjectModel.js';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-export const generateQuizForTopic = async (topicName, topicId) => {
+export const generateQuizForTopic = async (topicName, topicId,teacherId,subjectId) => {
+  console.log(teacherId);
   try {
     const prompt = `You are an experienced and dedicated teacher who has just finished teaching a comprehensive lesson on **[${topicName}]** to your class. To assess their understanding of the material, you need to create a multiple-choice quiz.
 
@@ -40,11 +42,20 @@ The JSON object should adhere strictly to the following format:
     const quizData = JSON.parse(jsonString);
 
     // Create the quiz
+    const subjects = await Subject.find({ _id: subjectId })
+    .populate('department', 'name')
+    .populate('section', 'name');
+
+    console.log("subjects",subjects)
     const quiz = new Quiz({
       title: `Quiz for ${topicName}`,
       description: `Automatically generated quiz for ${topicName}`,
+
       topic: topicId,
+      teacherId:teacherId,
+      
     });
+    console.log("quiz",quiz)
 
     const savedQuiz = await quiz.save();
 

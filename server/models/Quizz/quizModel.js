@@ -1,4 +1,5 @@
 import mongoose from "../../config/index.js";
+import Department from "../Department/Departmentmodel.js";
 
 const quizzSchema = new mongoose.Schema({
     title: String,
@@ -7,8 +8,16 @@ const quizzSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Subjects"
     },
-   
-    createdAt: {
+    Department: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Department"
+    },
+    section: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Section"
+    },
+    
+     createdAt: {
         type: Date,
         default: Date.now
     },
@@ -23,6 +32,10 @@ const quizzSchema = new mongoose.Schema({
     notes: {
         type: String,
         default: ""
+    },
+    teacherId:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Teacher',
     },
     quizQuestions: [{
       type: { type: mongoose.Schema.Types.ObjectId, ref: 'QuizQuestion', required: true} }]

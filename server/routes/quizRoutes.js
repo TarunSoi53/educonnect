@@ -4,7 +4,7 @@
 // import {
 //   generateNewQuiz,
 //     getquiz,
-//     updateQuiz,
+//     updateQuiz, 
 //     deletequiz
 // } from '../controllers/sectionController.js';
 

@@ -13,9 +13,7 @@ import communityRoutes from './routes/communityRoutes.js';
 import subjectRoutes from './routes/subjectRoutes.js';
 import topicRoutes from './routes/Subject/TopicRoutes.js';
 
-
-
-// import quizRoutes from './routes/quizRoutes.js';
+ import quizRoutes from './routes//Quizz/quizRoutes.js';
 
 dotenv.config();
 
@@ -23,6 +21,7 @@ const app = express();
 
 // Middleware
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Connect to MongoDB
@@ -40,11 +39,11 @@ app.use('/api/colleges', collegeRoutes);
 
 app.use('/api/teachers', teacherRoutes);
 app.use('/api/students', studentRoutes);
-app.use('/api/communityPages', communityRoutes);
+app.use('/api/community', communityRoutes);
 app.use('/api/subjects', subjectRoutes);
 app.use('/api/topics', topicRoutes); 
 
-// app.use('/api/quizzes', quizRoutes);
+ app.use('/api/quizzes', quizRoutes);
 
 
 // Error handling middleware

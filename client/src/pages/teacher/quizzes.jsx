@@ -7,6 +7,7 @@ import api from '../../utils/api';
 
 const Quizzes = () => {
   const { user } = useAuthStore();
+  console.log(user)
   const [quizzes, setQuizzes] = useState([]);
   const [stats, setStats] = useState({
     totalQuizzes: 0,
@@ -38,6 +39,7 @@ const Quizzes = () => {
 
   const fetchStats = async () => {
     try {
+      
       const response = await api.get(`/api/quizzes/stats/${user._id}`);
       setStats(response.data);
     } catch (error) {
@@ -47,7 +49,8 @@ const Quizzes = () => {
 
   const fetchQuizzes = async () => {
     try {
-      const response = await api.get(`/api/quizzes/teacher/${user._id}`);
+
+      const response = await api.get(`/api/quizzes/teacher/`);
       setQuizzes(response.data);
     } catch (error) {
       setError('Failed to fetch quizzes');
@@ -65,7 +68,7 @@ const Quizzes = () => {
 
   const fetchSections = async (departmentId) => {
     try {
-      const response = await api.get(`/api/sections/department/${departmentId}`);
+      const response = await api.get(`/api/sections/${departmentId}/sections`);
       setSections(response.data);
     } catch (error) {
       setError('Failed to fetch sections');
@@ -88,6 +91,19 @@ const Quizzes = () => {
       setError('Failed to fetch quiz details');
     }
   };
+
+
+ const handleStartQuiz=async (quizId)=>{
+  const response= await api.get(`api/quizes/startquiz/${quizId}`)
+  
+ }
+
+
+
+
+
+
+
 
   return (
     <DashboardLayout title="Quiz Management">
@@ -159,12 +175,14 @@ const Quizzes = () => {
               key={quiz._id}
               className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50"
               onClick={() => handleQuizClick(quiz._id)}
-            >
+            ><div> 
               <h3 className="font-semibold">{quiz.title}</h3>
               <p className="text-sm text-gray-600">{quiz.description}</p>
               <p className="text-xs text-gray-500 mt-2">
                 Created on {new Date(quiz.createdAt).toLocaleDateString()}
               </p>
+              </div>
+              <div className="flex justify-between mt-2"><button className="bg-blue-400 p-2 rounded text-black hover:bg-blue-600 hover:text-amber-50"> start quiz</button></div>
             </div>
           ))}
         </div>
@@ -174,16 +192,16 @@ const Quizzes = () => {
       {selectedQuiz && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">{selectedQuiz.title}</h2>
-              <button
+            <div className="flex justify-between items-center  bg-blue-300 text-white mb-4">
+              <div><h2 className="text-xl font-semibold">{selectedQuiz.title}</h2></div>
+             <div className=""> <button
                 onClick={() => setSelectedQuiz(null)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 block hover:text-gray-700"
               >
                 ✕
-              </button>
+              </button></div>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 mt-10">
               {selectedQuiz.quizQuestions.map((question, index) => (
                 <div key={question._id} className="border-b pb-4">
                   <p className="font-semibold">Question {index + 1}: {question.question}</p>
@@ -192,7 +210,7 @@ const Quizzes = () => {
                       <p
                         key={i}
                         className={`pl-2 ${
-                          option === question.correctAnswer ? 'text-green-600 font-semibold' : ''
+                          String.fromCharCode(97 + i) === question.correctAnswer ? 'text-green-600 font-semibold' : ''
                         }`}
                       >
                         {String.fromCharCode(97 + i)}. {option}

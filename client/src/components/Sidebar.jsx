@@ -111,7 +111,10 @@ const Sidebar = ({ collegeName }) => {
               <span>Quiz Control</span>
             </Link>
             <Link
-              to="/teacher/chat-groups"
+              // to="/teacher/chat-groups"
+              to="/teacher/dashboard"
+              
+
               className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
                 isActive('/teacher/chat-groups') ? 'bg-gray-700' : ''
               }`}
@@ -135,7 +138,7 @@ const Sidebar = ({ collegeName }) => {
         return (
           <>
             <Link
-              to="/student"
+              to="/student/dashboard"
               className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
                 isActive('/student') ? 'bg-gray-700' : ''
               }`}
@@ -153,7 +156,8 @@ const Sidebar = ({ collegeName }) => {
               <span>Live Classes</span>
             </Link>
             <Link
-              to="/student/class-groups"
+              // to="/student/class-groups"
+              to="/student/dashboard"
               className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
                 isActive('/student/class-groups') ? 'bg-gray-700' : ''
               }`}

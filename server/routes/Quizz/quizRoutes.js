@@ -11,7 +11,8 @@ router.use(authMiddleware);
 router.get('/stats/:teacherId', getQuizStats);
 
 // Get all quizzes for a teacher with optional filters
-router.get('/teacher/:teacherId', getTeacherQuizzes);
+router.get('/teacher/', getTeacherQuizzes);
+// router.get('/startquiz/:quizId',startQuiz)
 
 // Get quiz details with questions
 router.get('/:quizId', getQuizDetails);

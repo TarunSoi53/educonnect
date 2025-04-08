@@ -19,10 +19,10 @@ const ArtGalleryPostSchema = new mongoose.Schema({
         type: [String],
         default: []
     },
-    views: {
-        type: Number,
-        default: 0
-    },
+    // views: {
+    //     type: Number,
+    //     default: 0
+    // },
 
     likes: {
         type: Number,
