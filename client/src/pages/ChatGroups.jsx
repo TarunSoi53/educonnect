@@ -197,12 +197,13 @@ const ChatGroups = () => {
                     {selectedChatGroup ? (
                         <>
                             {/* Chat Header */}
-                            <div className="bg-white border-b border-gray-200 p-4 shadow-sm">
+                            <div className="bg-white border-b  border-gray-200 p-4 shadow-sm">
                                 <h3 className="text-lg font-semibold text-gray-800">{selectedChatGroup.name}</h3>
                             </div>
 
                             {/* Chat Messages */}
-                            <div className="flex-1 overflow-y-auto p-4 space-y-2">
+                            <div className="flex-1 ">
+                            <div className='overflow-y-auto p-4 space-y-2'>
                                 {loadingMessages ? (
                                     <div className="text-center text-gray-500">Loading messages...</div>
                                 ) : error ? (
@@ -231,6 +232,7 @@ const ChatGroups = () => {
                                         <p className="mt-4 text-gray-500 text-sm">No messages yet. Start the conversation!</p>
                                     </div>
                                 )}
+                               </div>
                             </div>
 
                             {/* Chat Input */}
