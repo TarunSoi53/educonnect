@@ -112,7 +112,7 @@ const Sidebar = ({ collegeName }) => {
             </Link>
             <Link
               // to="/teacher/chat-groups"
-              to="/teacher/dashboard"
+              to="/ChatGroups"
               
 
               className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
@@ -157,7 +157,7 @@ const Sidebar = ({ collegeName }) => {
             </Link>
             <Link
               // to="/student/class-groups"
-              to="/student/dashboard"
+              to="/ChatGroups"
               className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
                 isActive('/student/class-groups') ? 'bg-gray-700' : ''
               }`}

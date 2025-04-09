@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -15,6 +15,8 @@ import { useEffect } from 'react';
 import TeacherManagement from './pages/admin/TeacherManagement';
 import Classes from './pages/teacher/Classes';
 import Quizzes from './pages/teacher/quizzes';
+import { io } from 'socket.io-client'
+import ChatGroups from './pages/ChatGroups';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -38,7 +40,9 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
 function App() {
   const { login, logout } = useAuthStore();
+  const socket = useRef(null);
   useEffect(() => {
+    socket.current = io('http://localhost:5000');
     initializeAuthState(login, logout);
   }, [login, logout]);
   return (
@@ -98,6 +102,14 @@ function App() {
             <ProtectedRoute allowedRoles={['teacher']}>
               <Classes />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ChatGroups"
+          element={
+           
+              <ChatGroups />
+            
           }
         />
 

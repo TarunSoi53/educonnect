@@ -26,6 +26,10 @@ const subjectSchema = new mongoose.Schema({
     ref: 'College',
     required: true
   },
+  chatGroupId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ChatGroup'
+  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import http from 'http';
+import { Server } from 'socket.io';
 import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import departmentRoutes from './routes/departmentRoutes.js';
@@ -12,23 +14,31 @@ import studentRoutes from './routes/studentRoutes.js';
 import communityRoutes from './routes/communityRoutes.js';
 import subjectRoutes from './routes/subjectRoutes.js';
 import topicRoutes from './routes/Subject/TopicRoutes.js';
+import chatRoutes from './routes/chatgroup/chatRoutes.js';
 
- import quizRoutes from './routes//Quizz/quizRoutes.js';
+
+import quizRoutes from './routes//Quizz/quizRoutes.js';
+import  {setupSocket} from './socket.js';
 
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
+
 
 // Middleware
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+setupSocket(server);
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
+
+
+ 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
@@ -44,6 +54,7 @@ app.use('/api/subjects', subjectRoutes);
 app.use('/api/topics', topicRoutes); 
 
  app.use('/api/quizzes', quizRoutes);
+ app.use('/api/chat', chatRoutes);
 
 
 // Error handling middleware
@@ -56,6 +67,6 @@ app.use((err, req, res, next) => {
 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 }); 

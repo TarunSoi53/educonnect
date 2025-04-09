@@ -40,8 +40,9 @@ export const authMiddleware = async (req, res, next) => {
 
         req.user = user;
         req.user.role = decoded.role;
-        console.log(req)
-        
+        req.role= decoded.role; // Store role in req for later use
+      
+        console.log("User role in authMiddleware:", req.role);
         next();
     } catch (error) {
         res.status(401).json({ message: 'Not authorized, token failed' });
