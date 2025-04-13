@@ -1,7 +1,9 @@
-import cloudinary from 'cloudinary';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { v2 as cloudinary } from "cloudinary";
+// import cloudinary from 'cloudinary';
+// import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
-import dotenv from 'dotenv';
+import path from 'path';
+
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,15 +13,32 @@ cloudinary.config({
 
 // Configure storage for different types of uploads if needed
 // Generic image storage
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'college_community', // Folder in Cloudinary
-    allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp', 'avif'], // Allowed formats
-    // transformation: [{ width: 500, height: 500, crop: 'limit' }] // Optional transformations
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: 'college_community', // Folder in Cloudinary
+//     allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp', 'avif'], // Allowed formats
+//     // transformation: [{ width: 500, height: 500, crop: 'limit' }] // Optional transformations
+//   },
+// });
+
+
+
+
+
+const storage = multer.diskStorage({
+  // destination: './public/uploads',
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
   },
 });
 
-const upload = multer({ storage: storage });
+export const upload = multer({ storage: storage });
+export {cloudinary};
 
-module.exports = { cloudinary, upload };
+
+
+

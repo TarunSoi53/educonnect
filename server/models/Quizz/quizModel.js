@@ -8,7 +8,7 @@ const quizzSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Subjects"
     },
-    Department: {
+    department: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Department"
     },
@@ -37,8 +37,14 @@ const quizzSchema = new mongoose.Schema({
       type:mongoose.Schema.Types.ObjectId,
       ref:'Teacher',
     },
+    status: {
+        type: String,
+        enum: ['pending', 'active', 'completed'], // Define the allowed status values
+        default: 'pending' // Set a default status
+      },
     quizQuestions: [{
       type: { type: mongoose.Schema.Types.ObjectId, ref: 'QuizQuestion', required: true} }]
+      
 });
 
 const Quiz = mongoose.model("Quiz", quizzSchema); // Changed model name to "Quiz"

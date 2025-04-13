@@ -1,23 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  FaHome, 
-  FaUsers, 
-  FaChalkboardTeacher, 
-  FaUserGraduate, 
-  FaUserCircle, 
-  FaSignOutAlt, 
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  FaHome,
+  FaUsers,
+  FaChalkboardTeacher,
+  FaUserGraduate,
+  FaUserCircle,
+  FaSignOutAlt,
   FaBuilding,
   FaVideo,
   FaComments,
   FaQuestionCircle,
-  FaUsersCog
+  FaUsersCog,
+  FaBars, // Hamburger icon for collapse/expand
 } from 'react-icons/fa';
 import useAuthStore from '../store/useAuthStore';
 
 const Sidebar = ({ collegeName }) => {
   const location = useLocation();
   const { user, logout } = useAuthStore();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -27,153 +30,80 @@ const Sidebar = ({ collegeName }) => {
     logout();
   };
 
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  const sidebarVariants = {
+    expanded: { width: 240 },
+    collapsed: { width: 60 },
+  };
+
+  const contentVariants = {
+    expanded: { opacity: 1, x: 0, transition: { duration: 0.2, delay: 0.1 } },
+    collapsed: { opacity: 0, x: -20, transition: { duration: 0.1 } },
+  };
+
+  const renderNavigationItem = (to, icon, text) => (
+    <Link
+      to={to}
+      className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
+        isActive(to) ? 'bg-gray-700' : ''
+      }`}
+    >
+      {icon}
+      <motion.span variants={contentVariants} className="truncate">
+        {text}
+      </motion.span>
+    </Link>
+  );
+
+  const renderNavigationItemCollapsed = (to, icon) => (
+    <Link
+      to={to}
+      className={`flex items-center justify-center p-2 rounded-lg hover:bg-gray-700 ${
+        isActive(to) ? 'bg-gray-700' : ''
+      }`}
+    >
+      {icon}
+    </Link>
+  );
+
   const renderNavigationItems = () => {
     switch (user?.role) {
       case 'collegeAdmin':
         return (
           <>
-            <Link
-              to="/admin/dashboard"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/admin') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaHome />
-              <span>Dashboard</span>
-            </Link>
-            <Link
-              to="/admin/manage-departments"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/admin/manage-departments') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaUsers />
-              <span>Departments</span>
-            </Link>
-            <Link
-              to="/admin/teachers"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/admin/teachers') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaChalkboardTeacher />
-              <span>Teachers</span>
-            </Link>
-            <Link
-              to="/admin/students"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/admin/students') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaUserGraduate />
-              <span>Students</span>
-            </Link>
-            <Link
-              to="/community"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/community') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaUsersCog />
-              <span>Community</span>
-            </Link>
+            {renderNavigationItem('/admin/dashboard', <FaHome />, 'Dashboard')}
+            {renderNavigationItem('/admin/manage-departments', <FaUsers />, 'Departments')}
+            {renderNavigationItem('/admin/teachers', <FaChalkboardTeacher />, 'Teachers')}
+            {/* {renderNavigationItem('/admin/students', <FaUserGraduate />, 'Students')} */}
+            {/* {renderNavigationItem('/community', <FaUsersCog />, 'Community')} */}
+            {renderNavigationItem('/communityNew', <FaUsersCog />, 'Community')}
           </>
         );
 
       case 'teacher':
         return (
           <>
-            <Link
-              to="/teacher/dashboard"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/teacher') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaHome />
-              <span>Dashboard</span>
-            </Link>
-            <Link
-              to="/teacher/classes"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/teacher/classes') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaVideo />
-              <span>Classes</span>
-            </Link>
-            <Link
-              to="/teacher/quiz"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/teacher/quiz') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaQuestionCircle />
-              <span>Quiz Control</span>
-            </Link>
-            <Link
-              // to="/teacher/chat-groups"
-              to="/ChatGroups"
-              
-
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/teacher/chat-groups') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaComments />
-              <span>Chat Groups</span>
-            </Link>
-            <Link
-              to="/community"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/community') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaUsersCog />
-              <span>Community</span>
-            </Link>
+            {renderNavigationItem('/teacher/dashboard', <FaHome />, 'Dashboard')}
+            {renderNavigationItem('/teacher/classes', <FaVideo />, 'Classes')}
+            {renderNavigationItem('/teacher/quiz', <FaQuestionCircle />, 'Quiz Control')}
+            {renderNavigationItem('/ChatGroups', <FaComments />, 'Chat Groups')}
+            {/* {renderNavigationItem('/community', <FaUsersCog />, 'Community')} */}
+            {renderNavigationItem('/communityNew', <FaUsersCog />, 'Community')}
           </>
         );
 
       case 'student':
         return (
           <>
-            <Link
-              to="/student/dashboard"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/student') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaHome />
-              <span>Dashboard</span>
-            </Link>
-            <Link
-              to="/student/live-classes"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/student/live-classes') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaVideo />
-              <span>Live Classes</span>
-            </Link>
-            <Link
-              // to="/student/class-groups"
-              to="/ChatGroups"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/student/class-groups') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaComments />
-              <span>Class Groups</span>
-            </Link>
-            <Link
-              to="/community"
-              className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-700 ${
-                isActive('/community') ? 'bg-gray-700' : ''
-              }`}
-            >
-              <FaUsersCog />
-              <span>Community</span>
-            </Link>
+            {renderNavigationItem('/student/dashboard', <FaHome />, 'Dashboard')}
+            {renderNavigationItem('/student/ClassDashboard', <FaVideo />, 'Classes')}
+           
+            {renderNavigationItem('/ChatGroups', <FaComments />, 'Class Groups')}
+            {/* {renderNavigationItem('/community', <FaUsersCog />, 'Community')} */}
+            {renderNavigationItem('/communityNew', <FaUsersCog />, 'Community')}
           </>
         );
 
@@ -183,13 +113,28 @@ const Sidebar = ({ collegeName }) => {
   };
 
   return (
-    <div className="h-screen w-64 bg-gray-800 text-white flex flex-col">
-      {/* Top Section - College Name */}
-      <div className="p-4 border-b border-gray-700">
-        <div className="flex items-center space-x-2">
+    <motion.div
+      className="h-screen bg-gray-800 text-white flex flex-col shadow-md"
+      variants={sidebarVariants}
+      animate={isCollapsed ? 'collapsed' : 'expanded'}
+      transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+    >
+      {/* Header with Collapse Button */}
+      <div className="p-4 border-b border-gray-700 flex items-center justify-between">
+        <button onClick={toggleCollapse} className="text-gray-400 hover:text-white focus:outline-none">
+          <FaBars className="text-xl" />
+        </button>
+        <motion.div
+          variants={contentVariants}
+          className="flex items-center justify-start space-x-2"
+          style={{ opacity: isCollapsed ? 0 : 1, x: isCollapsed ? -20 : 0 }}
+        >
           <FaBuilding className="text-xl" />
-          <h2 className="text-lg font-semibold truncate">{collegeName || 'College Name'}</h2>
-        </div>
+          <motion.h2 className="text-lg font-semibold truncate">
+            {collegeName || 'College Name'}
+          </motion.h2>
+        </motion.div>
+        {isCollapsed && <div className="w-6"></div> /* Spacer for collapsed state */}
       </div>
 
       {/* Navigation Section */}
@@ -203,21 +148,78 @@ const Sidebar = ({ collegeName }) => {
       <div className="p-4 border-t border-gray-700">
         <div className="flex items-center space-x-2 mb-4">
           <FaUserCircle className="text-xl" />
-          <div>
+          <motion.div variants={contentVariants} className="truncate">
             <p className="font-medium">{user?.name}</p>
             <p className="text-sm text-gray-400">{user?.email}</p>
-          </div>
+          </motion.div>
         </div>
-        <button
+        <Link
+          to="/logout" // Or your logout route
           onClick={handleLogout}
           className="flex items-center space-x-2 w-full p-2 rounded-lg hover:bg-gray-700 text-red-400"
         >
           <FaSignOutAlt />
-          <span>Logout</span>
-        </button>
+          <motion.span variants={contentVariants}>Logout</motion.span>
+        </Link>
       </div>
-    </div>
+
+      {/* Mini Sidebar (Visible when collapsed) */}
+      <AnimatePresence>
+        {isCollapsed && (
+          <motion.div
+            key="miniSidebar"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 60, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+            className="absolute top-0 left-0 h-full w-16 bg-gray-800 flex flex-col items-center p-4"
+            style={{ zIndex: 50 }}
+            onClick={toggleCollapse}
+          >
+            <div className="mb-4">
+              <FaBars className="text-xl text-white" />
+            </div>
+            <nav className="flex-1 flex flex-col p-4 space-y-4">
+              {user?.role === 'collegeAdmin' && (
+                <>
+                  {renderNavigationItemCollapsed('/admin/dashboard', <FaHome className={`text-white ${isActive('/admin/dashboard') ? 'text-indigo-400' : ''}`} />)}
+                  {renderNavigationItemCollapsed('/admin/manage-departments', <FaUsers className={`text-white ${isActive('/admin/manage-departments') ? 'text-indigo-400' : ''}`} />)}
+                  {renderNavigationItemCollapsed('/admin/teachers', <FaChalkboardTeacher className={`text-white ${isActive('/admin/teachers') ? 'text-indigo-400' : ''}`} />)}
+                  {/* {renderNavigationItemCollapsed('/admin/students', <FaUserGraduate className={`text-white ${isActive('/admin/students') ? 'text-indigo-400' : ''}`} />)} */}
+                  {/* {renderNavigationItemCollapsed('/community', <FaUsersCog className={`text-white ${isActive('/community') ? 'text-indigo-400' : ''}`} />)} */}
+                  {renderNavigationItemCollapsed('/communityNew', <FaUsersCog className={`text-white ${isActive('/communityNew') ? 'text-indigo-400' : ''}`} />)}
+                </>
+              )}
+              {user?.role === 'teacher' && (
+                <>
+                  {renderNavigationItemCollapsed('/teacher/dashboard', <FaHome className={`text-white ${isActive('/teacher/dashboard') ? 'text-indigo-400' : ''}`} />)}
+                  {renderNavigationItemCollapsed('/teacher/classes', <FaVideo className={`text-white ${isActive('/teacher/classes') ? 'text-indigo-400' : ''}`} />)}
+                  {renderNavigationItemCollapsed('/teacher/quiz', <FaQuestionCircle className={`text-white ${isActive('/teacher/quiz') ? 'text-indigo-400' : ''}`} />)}
+                  {renderNavigationItemCollapsed('/ChatGroups', <FaComments className={`text-white ${isActive('/ChatGroups') ? 'text-indigo-400' : ''}`} />)}
+                  {/* {renderNavigationItemCollapsed('/community', <FaUsersCog className={`text-white ${isActive('/community') ? 'text-indigo-400' : ''}`} />)} */}
+                  {renderNavigationItemCollapsed('/communityNew', <FaUsersCog className={`text-white ${isActive('/communityNew') ? 'text-indigo-400' : ''}`} />)}
+                </>
+              )}
+              {user?.role === 'student' && (
+                <>
+                  {renderNavigationItemCollapsed('/student/dashboard', <FaHome className={`text-white ${isActive('/student/dashboard') ? 'text-indigo-400' : ''}`} />)}
+                  {renderNavigationItemCollapsed('/student/ClassDashboard', <FaVideo className={`text-white ${isActive('/student/ClassDashboard') ? 'text-indigo-400' : ''}`} />)}
+                
+                  {renderNavigationItemCollapsed('/ChatGroups', <FaComments className={`text-white ${isActive('/ChatGroups') ? 'text-indigo-400' : ''}`} />)}
+                  {/* {renderNavigationItemCollapsed('/community', <FaUsersCog className={`text-white ${isActive('/community') ? 'text-indigo-400' : ''}`} />)} */}
+                  {renderNavigationItemCollapsed('/communityNew', <FaUsersCog className={`text-white ${isActive('/communityNew') ? 'text-indigo-400' : ''}`} />)}
+                </>
+              )}
+            </nav>
+            <div className="mt-auto">
+              <FaUserCircle className="text-xl text-white mb-2" />
+              <Link to="/logout" onClick={handleLogout} className="text-red-400"><FaSignOutAlt className="text-xl" /></Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

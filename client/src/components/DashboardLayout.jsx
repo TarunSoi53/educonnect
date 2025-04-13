@@ -6,7 +6,7 @@ const DashboardLayout = ({ children, collegeName }) => {
     <div className="flex h-screen bg-gray-100">
       <Sidebar collegeName={collegeName} />
       <div className="flex-1 overflow-auto">
-        <main className="p-6">
+        <main className="">
           {children}
         </main>
       </div>

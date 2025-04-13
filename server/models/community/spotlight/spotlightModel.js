@@ -1,7 +1,8 @@
+import { timeStamp } from "console";
 import mongoose from "../../../config/index.js";
 
 
-const ArtGalleryPostSchema = new mongoose.Schema({
+const spotlightPostSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -13,14 +14,14 @@ const ArtGalleryPostSchema = new mongoose.Schema({
         enum: ['Teacher', 'Student']
     },
     
-    title: { type: String, required: true },
+   
     postUrl: { type: String, required: true },
     description: { type: String, required: true },
-    category: { type: String,  },
+  
     tags: {
         type: [String],
         default: []
-    },
+    },  
     imagePublicId:{ type: String, required: true },
 
     likes: {
@@ -42,11 +43,11 @@ const ArtGalleryPostSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
                 ref: "College"
            
-        },
+        }
 
 
 });
 
-const ArtGallery = mongoose.model("ArtGallery", ArtGalleryPostSchema);
+const Spotlight = mongoose.model("Spotlight", spotlightPostSchema);
 
-export default ArtGallery;
+export default Spotlight;

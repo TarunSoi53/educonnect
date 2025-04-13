@@ -42,7 +42,7 @@ export const createTopic = async (req, res) => {
 
     // Generate quiz for the topic
     try {
-      const quizId = await generateQuizForTopic(name, savedTopic._id,teacherId, subjectId);
+      const quizId = await generateQuizForTopic(name, savedTopic._id,teacherId, subjectId,req.user);
       topic.quizId = quizId;
       await topic.save();
     } catch (error) {

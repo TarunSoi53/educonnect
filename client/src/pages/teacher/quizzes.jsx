@@ -23,6 +23,7 @@ const Quizzes = () => {
   const [departments, setDepartments] = useState([]);
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [message, setmessage] = useState("");
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -94,7 +95,9 @@ const Quizzes = () => {
 
 
  const handleStartQuiz=async (quizId)=>{
-  const response= await api.get(`api/quizes/startquiz/${quizId}`)
+  const response= await api.patch(`/api/quizzes/startquiz/${quizId}`)
+  setmessage(response.data.message)
+
   
  }
 
@@ -174,7 +177,7 @@ const Quizzes = () => {
             <div
               key={quiz._id}
               className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50"
-              onClick={() => handleQuizClick(quiz._id)}
+             
             ><div> 
               <h3 className="font-semibold">{quiz.title}</h3>
               <p className="text-sm text-gray-600">{quiz.description}</p>
@@ -182,7 +185,14 @@ const Quizzes = () => {
                 Created on {new Date(quiz.createdAt).toLocaleDateString()}
               </p>
               </div>
-              <div className="flex justify-between mt-2"><button className="bg-blue-400 p-2 rounded text-black hover:bg-blue-600 hover:text-amber-50"> start quiz</button></div>
+              <div className="flex justify-between mt-2"> 
+               
+                <button className="bg-blue-400 p-2 rounded text-black hover:bg-blue-600 hover:text-amber-50" onClick={() => handleQuizClick(quiz._id)} > view question</button>
+              </div>
+              <div className="flex justify-between mt-2"> 
+                {quiz.status=="pending"?(
+                <button className="bg-blue-400 p-2 rounded text-black hover:bg-blue-600 hover:text-amber-50" onClick={()=>{handleStartQuiz(quiz._id)}}>{`${quiz.status} ${quiz.status=="pending"?"start quiz":""} `}</button>
+                 ):<p>{quiz.status}</p>} </div>
             </div>
           ))}
         </div>

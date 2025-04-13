@@ -112,9 +112,9 @@ const Community = () => {
   const fetchSpotlightPosts = useCallback(async () => {
     setLoading(prev => ({ ...prev, spotlight: true }));
     try {
-      const { data } = await api.get('/api/community/spotlight');
+      const { data } = await api.get('/api/community/spotlight/');
       setSpotlightPosts(data);
-    } catch (err) {
+    } catch (err) { 
       setError('Failed to fetch spotlight posts');
       console.error(err);
     } finally {
@@ -150,7 +150,7 @@ const Community = () => {
   const fetchArtItems = useCallback(async () => {
     setLoading(prev => ({ ...prev, artGallery: true }));
     try {
-      const { data } = await api.get('/api/community/art-gallery');
+      const { data } = await api.get('/api/community/artgallery/');
       setArtItems(data);
     } catch (err) {
       setError('Failed to fetch art gallery items');
@@ -163,7 +163,7 @@ const Community = () => {
   const fetchPendingArt = useCallback(async () => {
      // setLoading(prev => ({ ...prev, artGallery: true }));
     try {
-      const { data } = await api.get('/api/community/art-gallery/pending');
+      const { data } = await api.get('/api/community/artgallery/pending');
       setPendingArt(data);
     } catch (err) {
       setError('Failed to fetch pending art items');
@@ -175,7 +175,7 @@ const Community = () => {
   const fetchMyArtUploads = useCallback(async () => {
      // setLoading(prev => ({ ...prev, artGallery: true }));
     try {
-      const { data } = await api.get('/api/community/art-gallery/my-uploads');
+      const { data } = await api.get('/api/community/artgallery/my-uploads');
       setMyArtUploads(data);
     } catch (err) {
       setError('Failed to fetch your art uploads');
@@ -269,7 +269,7 @@ const Community = () => {
     const formData = new FormData();
     formData.append('description', spotlightForm.description);
     if (spotlightForm.image) {
-        formData.append('image', spotlightForm.image);
+        formData.append('Spotlight', spotlightForm.image);
     }
 
     try {
@@ -309,7 +309,7 @@ const Community = () => {
     formData.append('title', artUploadForm.title);
     formData.append('description', artUploadForm.description);
     formData.append('category', artUploadForm.category);
-    formData.append('image', artUploadForm.image);
+    formData.append('artgallery', artUploadForm.image);
 
     if (!artUploadForm.image) {
         setError("Please select an image file.");
@@ -317,7 +317,7 @@ const Community = () => {
     }
     
     try {
-      await api.post('/api/community/art-gallery/upload', formData, {
+      await api.post('/api/community/artgallery/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setShowArtUploadModal(false);
@@ -334,7 +334,7 @@ const Community = () => {
   const handleArtStatusUpdate = async (id, status, rejectionReason = '') => {
     setError('');
     try {
-      await api.patch(`/api/community/art-gallery/${id}/status`, { status, rejectionReason });
+      await api.patch(`/api/community/artgallery/${id}/status`, { status, rejectionReason });
       fetchPendingArt(); // Refresh pending list
       fetchArtItems(); // Refresh approved list
       fetchMyArtUploads(); // Refresh user's view if they uploaded it
@@ -494,9 +494,9 @@ const Community = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {spotlightPosts.map((post) => (
                         <div key={post._id} className="border rounded-lg overflow-hidden bg-white shadow-sm flex flex-col">
-                            {post.imageUrl && (
+                            {post.postUrl && (
                                 <img
-                                src={post.imageUrl}
+                                src={post.postUrl}
                                 alt="Spotlight content"
                                 className="w-full h-48 object-cover"
                                 />
@@ -524,9 +524,9 @@ const Community = () => {
                     <div className="space-y-4">
                         {pendingSpotlight.map((item) => (
                             <div key={item._id} className="border rounded-lg p-4 bg-white flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-4">
-                                {item.imageUrl && (
+                                {item.postUrl && (
                                     <img
-                                        src={item.imageUrl}
+                                        src={item.postUrl}
                                         alt="Pending spotlight"
                                         className="w-full sm:w-24 h-24 object-cover rounded flex-shrink-0"
                                     />
@@ -572,9 +572,9 @@ const Community = () => {
                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {mySpotlightUploads.map((item) => (
                                 <div key={item._id} className="border rounded-lg overflow-hidden bg-white shadow-sm">
-                                    {item.imageUrl && (
+                                    {item.postUrl && (
                                         <img
-                                        src={item.imageUrl}
+                                        src={item.postUrl}
                                         alt="My spotlight upload"
                                         className="w-full h-40 object-cover"
                                         />
@@ -615,7 +615,8 @@ const Community = () => {
                     {artItems.map((item) => (
                     <div key={item._id} className="border rounded-lg overflow-hidden bg-white shadow-sm">
                         <img
-                            src={item.imageUrl}
+                            src={item.postUrl
+                            }
                             alt={item.title}
                             className="w-full h-56 object-cover" // Slightly taller for art gallery
                         />
@@ -641,7 +642,7 @@ const Community = () => {
                             {pendingArt.map((item) => (
                                 <div key={item._id} className="border rounded-lg p-4 bg-white flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-4">
                                     <img
-                                    src={item.imageUrl}
+                                    src={item.postUrl}                                    
                                     alt={item.title}
                                     className="w-full sm:w-32 h-32 object-cover rounded flex-shrink-0"
                                     />
@@ -689,7 +690,7 @@ const Community = () => {
                         {myArtUploads.map((item) => (
                         <div key={item._id} className="border rounded-lg overflow-hidden bg-white shadow-sm">
                             <img
-                                src={item.imageUrl}
+                                src={item.postUrl}
                                 alt={item.title}
                                 className="w-full h-48 object-cover"
                             />

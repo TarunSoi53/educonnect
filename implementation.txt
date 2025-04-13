@@ -1,342 +1,349 @@
-# EduConnect - Implementation Documentation
-
-## Table of Contents
-1. Project Overview
-2. Technology Stack
-3. System Architecture
-4. Database Design
-5. Feature Implementation
-6. API Documentation
-7. Security Implementation
-8. Testing Strategy
-9. Deployment Process
-10. Future Enhancements
-11. Maintenance and Support
-
-## 1. Project Overview
-
-EduConnect represents a revolutionary approach to modern education management, serving as a comprehensive digital platform that bridges the gap between educators, students, and administrative staff. The system is designed with a focus on enhancing the educational experience through streamlined communication, efficient resource management, and data-driven insights. By integrating advanced technologies and user-centric design principles, EduConnect transforms traditional educational processes into a cohesive digital ecosystem.
-
-### 1.1 Core Features
-
-The platform's core functionality is built around several key features that work in harmony to create a complete educational management solution:
-
-- **Teacher Management System**: A sophisticated interface that enables administrators to efficiently manage faculty members, assign roles, and track performance metrics. The system includes features for department head selection, teacher evaluation, and professional development tracking.
-
-- **Subject and Topic Management**: A comprehensive module that allows teachers to organize course content hierarchically, from subject-level organization down to individual topics. This structure enables efficient content delivery and ensures systematic coverage of curriculum requirements.
-
-- **AI-Powered Quiz Generation**: Leveraging cutting-edge artificial intelligence technology, the platform automatically generates contextually relevant quizzes based on topic content. This feature significantly reduces teacher workload while maintaining high educational standards.
-
-- **Student Performance Tracking**: A robust analytics system that provides detailed insights into student progress, identifying areas of strength and opportunities for improvement. The system generates comprehensive reports and visualizations to support data-driven decision-making.
-
-- **Department-wise Organization**: A hierarchical structure that mirrors real-world educational institutions, enabling efficient management of academic departments, sections, and courses. This organization facilitates proper resource allocation and administrative oversight.
-
-- **Interactive Learning Interface**: A modern, user-friendly interface that promotes engagement and facilitates effective learning. The system includes features for real-time feedback, collaborative learning, and personalized educational experiences.
-
-## 2. Technology Stack
-
-### 2.1 Frontend Architecture
-
-The frontend of EduConnect is built using a modern, component-based architecture that ensures scalability and maintainability:
-
-- **React.js**: Serving as the foundation of our frontend development, React.js enables the creation of dynamic, responsive user interfaces. Its component-based architecture allows for code reusability and efficient state management.
-
-- **Tailwind CSS**: A utility-first CSS framework that provides a flexible and efficient way to style components. Tailwind's approach enables rapid development while maintaining consistency across the application.
-
-- **Axios**: A promise-based HTTP client that handles all API communications. Axios provides robust error handling, request/response interception, and automatic JSON data transformation.
-
-- **Context API**: React's built-in state management solution that enables efficient sharing of data across components. This eliminates prop drilling and provides a centralized approach to state management.
-
-- **React Router**: A powerful routing library that enables dynamic navigation and URL management. It supports nested routes, route protection, and seamless navigation between different sections of the application.
-
-### 2.2 Backend Infrastructure
-
-The backend is designed with scalability, security, and performance in mind:
-
-- **Node.js with Express.js**: A robust server-side JavaScript runtime that provides excellent performance and scalability. Express.js simplifies the creation of RESTful APIs and handles middleware integration seamlessly.
-
-- **MongoDB**: A NoSQL database that offers flexibility in data modeling and excellent scalability. Its document-based structure aligns perfectly with our application's data requirements.
-
-- **Mongoose**: An Object Data Modeling (ODM) library that provides a structured approach to MongoDB interactions. It includes built-in validation, query building, and middleware support.
-
-- **JWT Authentication**: A secure and efficient method for handling user authentication. JWT tokens enable stateless authentication and provide a robust security layer.
-
-- **Google Gemini AI**: Integrated for intelligent quiz generation and educational content analysis. This AI technology enhances the platform's capabilities in content creation and assessment.
-
-### 2.3 Development Ecosystem
-
-The development environment is carefully selected to maximize productivity and code quality:
-
-- **VS Code**: Our primary IDE, equipped with extensions for code formatting, debugging, and version control. It provides an excellent development experience with features like IntelliSense and integrated terminal.
-
-- **Git**: A distributed version control system that enables efficient collaboration and code management. We follow Git Flow methodology for branch management and version control.
-
-- **Postman**: An API development and testing tool that facilitates API documentation, testing, and monitoring. It helps ensure API reliability and consistency.
-
-- **MongoDB Compass**: A GUI for MongoDB that provides visual database management capabilities. It enables efficient data exploration and management.
-
-## 3. System Architecture
-
-### 3.1 Directory Structure
-
-The project follows a well-organized directory structure that promotes code organization and maintainability:
-
-```
-server/
-├── config/           # Configuration files for database, environment variables, and third-party services
-├── controllers/      # Business logic implementation for handling requests and responses
-├── middleware/       # Custom middleware for authentication, logging, and error handling
-├── models/          # Database schema definitions and data models
-├── routes/          # API endpoint definitions and route handlers
-├── services/        # External service integrations and business logic
-└── index.js         # Server entry point and main application configuration
-
-client/
-├── src/
-│   ├── components/  # Reusable UI components with specific functionality
-│   ├── context/     # React context providers for state management
-│   ├── pages/       # Page-level components and route handlers
-│   └── App.js       # Main application component and routing configuration
-```
-
-### 3.2 Authentication Flow
-
-The authentication system implements a secure and efficient flow:
-
-1. **User Registration/Login**: Users provide credentials through a secure form, which are validated against security requirements.
-
-2. **JWT Token Generation**: Upon successful authentication, the server generates a JSON Web Token containing user information and permissions.
-
-3. **Token Validation Middleware**: Each protected route includes middleware that verifies the token's authenticity and expiration.
-
-4. **Role-Based Access Control**: The system implements granular permission control based on user roles and department affiliations.
-
-## 4. Database Design
-
-### 4.1 Core Models
-
-The database schema is designed to efficiently represent the educational ecosystem:
-
-- **User Model**: 
-  - Implements role-based authentication with different permission levels
-  - Stores comprehensive profile information including contact details and preferences
-  - Maintains department and section associations for proper access control
-
-- **Subject Model**:
-  - Contains detailed subject information including code, name, and description
-  - Manages teacher assignments and scheduling
-  - Tracks department and section mappings for organizational purposes
-
-- **Topic Model**:
-  - Stores topic-specific information and learning objectives
-  - Maintains quiz associations for assessment purposes
-  - Tracks subject relationships for curriculum organization
-
-- **Quiz Model**:
-  - Manages quiz metadata including title, description, and timing
-  - Stores question collections with proper categorization
-  - Tracks performance metrics and submission data
-
-### 4.2 Relationships
-
-The database implements several key relationships to maintain data integrity:
-
-- **One-to-Many: Department to Subjects**: Each department can offer multiple subjects, while each subject belongs to exactly one department.
-
-- **One-to-Many: Subject to Topics**: Subjects contain multiple topics, with each topic belonging to a single subject.
-
-- **One-to-One: Topic to Quiz**: Each topic has exactly one associated quiz for assessment purposes.
-
-- **Many-to-Many: Teacher to Subjects**: Teachers can be assigned to multiple subjects, and subjects can have multiple teachers.
-
-## 5. Feature Implementation
-
-### 5.1 Teacher Management
-
-#### 5.1.1 Department Assignment
-The department assignment system provides comprehensive tools for managing faculty organization:
-
-- **Department Head Selection**: Administrators can designate department heads with elevated permissions and responsibilities.
-- **Teacher Department Mapping**: Teachers are assigned to specific departments with appropriate access levels.
-- **Role-Based Permissions**: Granular permission control ensures proper access to department-specific resources.
-
-#### 5.1.2 Subject Management
-The subject management module enables efficient course organization:
-
-- **Subject Creation and Assignment**: Teachers can create and manage subjects with detailed metadata.
-- **Topic Organization**: Hierarchical organization of topics within subjects for structured learning.
-- **Course Material Management**: Tools for uploading, organizing, and sharing educational resources.
-
-### 5.2 Quiz System
-
-#### 5.2.1 AI-Powered Generation
-The quiz generation system leverages advanced AI technology:
-
-- **Integration with Google Gemini AI**: Seamless integration with AI services for content generation.
-- **Topic-Based Question Generation**: Contextually relevant questions based on topic content.
-- **Multiple-Choice Format**: Standardized question format with four options.
-- **Automatic Answer Validation**: Built-in validation for correct answer identification.
-
-#### 5.2.2 Quiz Management
-Comprehensive tools for quiz administration:
-
-- **Quiz Creation and Editing**: Intuitive interface for quiz creation and modification.
-- **Question Bank Management**: Centralized storage and organization of questions.
-- **Performance Analytics**: Detailed insights into quiz performance and student progress.
-- **Department-Wise Filtering**: Ability to filter and analyze quizzes by department.
-
-### 5.3 Student Interface
-The student interface focuses on usability and engagement:
-
-- **Quiz Taking Interface**: Clean, intuitive interface for quiz participation.
-- **Performance Tracking**: Real-time feedback and progress monitoring.
-- **Progress Visualization**: Graphical representation of learning progress.
-- **Department-Specific Content**: Filtered content based on department enrollment.
-
-## 6. API Documentation
-
-### 6.1 Authentication Endpoints
-Secure endpoints for user authentication:
-
-- **POST /api/auth/register**: User registration with validation
-- **POST /api/auth/login**: Secure login with token generation
-- **GET /api/auth/verify**: Token verification and user validation
-
-### 6.2 Teacher Endpoints
-Endpoints for teacher management:
-
-- **GET /api/teachers/:id**: Retrieve teacher information
-- **PUT /api/teachers/:id**: Update teacher details
-- **GET /api/teachers/department/:id**: Get department-specific teachers
-
-### 6.3 Subject Endpoints
-Endpoints for subject management:
-
-- **POST /api/subjects**: Create new subjects
-- **GET /api/subjects/teacher/:id**: Get teacher's subjects
-- **PUT /api/subjects/:id**: Update subject information
-
-### 6.4 Topic Endpoints
-Endpoints for topic management:
-
-- **POST /api/topics**: Create new topics
-- **GET /api/topics/subject/:id**: Get subject topics
-- **PUT /api/topics/:id**: Update topic information
-
-### 6.5 Quiz Endpoints
-Endpoints for quiz management:
-
-- **POST /api/quizzes**: Create new quizzes
-- **GET /api/quizzes/teacher/:id**: Get teacher's quizzes
-- **GET /api/quizzes/:id**: Get quiz details
-- **GET /api/quizzes/stats/:teacherId**: Get quiz statistics
-
-## 7. Security Implementation
-
-### 7.1 Authentication
-Robust authentication mechanisms:
-
-- **JWT Token-Based Authentication**: Secure token-based authentication system
-- **Password Hashing with bcrypt**: Industry-standard password protection
-- **Token Expiration and Refresh**: Automatic token management
-- **Role-Based Access Control**: Granular permission system
-
-### 7.2 Data Protection
-Comprehensive data security measures:
-
-- **Input Validation**: Strict validation of all user inputs
-- **XSS Prevention**: Protection against cross-site scripting
-- **CSRF Protection**: Prevention of cross-site request forgery
-- **Rate Limiting**: Protection against brute force attacks
-
-### 7.3 API Security
-API-specific security measures:
-
-- **HTTPS Enforcement**: Mandatory secure connections
-- **CORS Configuration**: Controlled cross-origin resource sharing
-- **Request Validation**: Comprehensive request validation
-- **Error Handling**: Secure error message handling
-
-## 8. Testing Strategy
-
-### 8.1 Unit Testing
-Comprehensive unit testing approach:
-
-- **Component Testing**: Testing of individual UI components
-- **API Endpoint Testing**: Verification of API functionality
-- **Model Validation Testing**: Data model validation testing
-
-### 8.2 Integration Testing
-System integration testing:
-
-- **API Integration Tests**: Testing of API interactions
-- **Database Interaction Tests**: Verification of database operations
-- **Authentication Flow Tests**: Testing of authentication processes
-
-### 8.3 End-to-End Testing
-Complete system testing:
-
-- **User Flow Testing**: Testing of complete user journeys
-- **Cross-Browser Testing**: Compatibility testing across browsers
-- **Performance Testing**: System performance verification
-
-## 9. Deployment Process
-
-### 9.1 Environment Setup
-Initial deployment configuration:
-
-- **Environment Variables Configuration**: Secure management of environment variables
-- **Database Connection Setup**: Configuration of database connections
-- **API Key Management**: Secure handling of API keys
-
-### 9.2 Build Process
-Application build process:
-
-- **Frontend Build Optimization**: Optimization of frontend assets
-- **Backend Service Configuration**: Configuration of backend services
-- **Asset Management**: Management of static assets
-
-### 9.3 Deployment Steps
-Systematic deployment procedure:
-
-1. **Code Compilation**: Compilation of application code
-2. **Database Migration**: Migration of database schemas
-3. **Service Deployment**: Deployment of application services
-4. **SSL Configuration**: Setup of secure connections
-5. **Monitoring Setup**: Configuration of monitoring systems
-
-## 10. Future Enhancements
-
-### 10.1 Planned Features
-Upcoming system improvements:
-
-- **Advanced Analytics Dashboard**: Enhanced data visualization and analysis
-- **Real-Time Collaboration Tools**: Tools for collaborative learning
-- **Mobile Application Development**: Native mobile applications
-- **Enhanced AI Capabilities**: Advanced AI features
-
-### 10.2 Performance Optimization
-System performance improvements:
-
-- **Caching Implementation**: Implementation of caching strategies
-- **Database Indexing**: Optimization of database queries
-- **API Response Optimization**: Improvement of API performance
-- **Asset Optimization**: Optimization of static assets
-
-## 11. Maintenance and Support
-
-### 11.1 Regular Updates
-Ongoing system maintenance:
-
-- **Security Patches**: Regular security updates
-- **Feature Updates**: Continuous feature improvements
-- **Performance Improvements**: Ongoing performance optimization
-- **Bug Fixes**: Regular bug resolution
-
-### 11.2 Monitoring
-System monitoring and maintenance:
-
-- **Error Tracking**: Comprehensive error monitoring
-- **Performance Monitoring**: System performance tracking
-- **User Activity Tracking**: Monitoring of user interactions
-- **System Health Checks**: Regular system health verification 
+# EduConnect - Comprehensive Implementation Documentation
+
+## Project Overview and Vision
+EduConnect is an innovative educational ecosystem designed to bridge the gap between traditional classroom learning and modern digital collaboration. The platform achieves this through:
+
+1. **User Management System**:
+   - Implements a hierarchical role-based access control (RBAC) with:
+     * College Admins (Top-level management)
+     * Teachers (Content creators and evaluators)
+     * Students (Primary users)
+   - Each role has tailored permissions and interfaces
+   - Secure authentication using JWT tokens with refresh mechanism
+
+2. **Academic Structure Management**:
+   - College → Department → Section hierarchy
+   - Dynamic relationship mapping between:
+     * Subjects and Departments
+     * Teachers and Sections
+     * Students and Sections
+
+3. **Interactive Learning Tools**:
+   - AI-powered quiz generation
+   - Real-time quiz conducting
+   - Performance analytics
+
+4. **Community Engagement**:
+   - Art Gallery for creative expression
+   - Spotlight for achievements
+   - Discussion forums (via chat system)
+
+5. **Real-time Communication**:
+   - Socket.io based chat system
+   - Notifications and alerts
+   - Collaborative learning spaces
+
+## Project Architecture and Implementation Approach
+
+### Client-Side Architecture (React Frontend)
+
+The frontend is built using React with Vite as the build tool, organized following feature-based architecture:
+
+1. **Entry Points**:
+   - `main.jsx`: Initializes the React application with:
+     * Strict mode for development
+     * Global CSS imports
+     * Root component mounting
+   - `App.jsx`: Core application component handling:
+     * Authentication state management
+     * Routing configuration
+     * Global error boundaries
+
+2. **Page Components**:
+   - Admin Dashboard (`/admin/*`):
+     * College management interface
+     * User approval workflows
+     * System analytics
+   - Student Portal (`/student/*`):
+     * Quiz participation
+     * Performance tracking
+     * Community engagement
+   - Teacher Workspace (`/teacher/*`):
+     * Quiz creation tools
+     * Class management
+     * Student progress monitoring
+   - Community Hub (`/community`):
+     * Art gallery submissions
+     * Spotlight nominations
+     * Discussion forums
+
+3. **Core Components**:
+   - `DashboardLayout.jsx`: Provides consistent UI structure with:
+     * Responsive navigation
+     * Role-based content areas
+     * Theming support
+   - `Sidebar.jsx`: Dynamic navigation component that:
+     * Adapts to user role
+     * Highlights active routes
+     * Collapsible for mobile
+   - `Upload.jsx`: Handles file uploads with:
+     * Drag-and-drop interface
+     * File type validation
+     * Progress indicators
+
+4. **State Management**:
+   - `useAuthStore.js`: Manages:
+     * JWT token storage
+     * User role permissions
+     * Session timeout handling
+   - `useSocketStore.js`: Controls:
+     * WebSocket connections
+     * Real-time notifications
+     * Chat message queuing
+   - `useCollegeStore.js`: Maintains:
+     * College/department hierarchy
+     * Section assignments
+     * Subject mappings
+
+### Server-Side Architecture (Node.js/Express Backend)
+
+The backend is built using Express.js with MongoDB via Mongoose, following a modular MVC pattern:
+
+1. **Core Server Setup** (`server/index.js`):
+   - Express application configuration
+   - Middleware stack including:
+     * Body parsing
+     * CORS handling
+     * Authentication
+     * Request logging
+   - Database connection setup
+   - WebSocket server initialization
+   - Route mounting
+
+2. **Controller Layer**:
+   - Authentication (`authController.js`):
+     * JWT token generation/validation
+     * Password hashing (bcrypt)
+     * Role-based access control
+   - Quiz System (`Quizz/`):
+     * AI question generation integration
+     * Quiz session management
+     * Answer evaluation
+   - Community Features (`community/`):
+     * Content moderation workflows
+     * Approval/rejection handling
+     * Notification triggers
+   - Chat System (`chat/`):
+     * Message persistence
+     * Group management
+     * Real-time delivery
+
+3. **Data Models**:
+   - User Models (`UserModel/`):
+     * Polymorphic schema design for different roles
+     * Virtual population for relationships
+     * Password encryption hooks
+   - Quiz Models (`Quizz/`):
+     * Question-answer relationships
+     * Submission tracking
+     * Scoring algorithms
+   - Community Models (`community/`):
+     * Media storage references
+     * Approval status tracking
+     * User engagement metrics
+
+4. **Route Handling**:
+   - RESTful API design
+   - Versioned endpoints (`/api/v1/`)
+   - Rate limiting on public routes
+   - Input validation middleware
+   - Error handling standardization
+
+## Key Features Implementation
+
+### 1. Authentication System
+
+#### Core Components:
+- **JWT Token Management**:
+  - Access tokens (15min expiry) + refresh tokens (7day expiry)
+  - Secure HTTP-only cookies for token storage
+  - Automatic token refresh mechanism
+  - Blacklist for revoked tokens
+
+- **Role-Based Access Control**:
+  - Hierarchical permissions:
+    * CollegeAdmin → Teacher → Student
+  - Middleware validation for protected routes
+  - Dynamic permission checking
+
+- **Registration Flows**:
+  - CollegeAdmin: Manual approval by system
+  - Teacher: Requires college association
+  - Student: Self-registration with email verification
+
+#### Implementation Details:
+- **Password Security**:
+  - bcrypt hashing (12 rounds)
+  - Minimum 8 character complexity requirements
+  - Account lockout after 5 failed attempts
+
+- **Session Management**:
+  - Device fingerprinting
+  - Concurrent session control
+  - Automatic timeout after 30min inactivity
+
+- **Models**:
+  - CollegeAdmin: `server/models/UserModel/collegeAdmin/collegeAdminModel.js`
+    * Manages college-level permissions
+    * Can create departments/sections
+  - Teacher: `server/models/UserModel/Teachers/teacherModel.js`
+    * Subject-specific permissions
+    * Quiz creation rights
+  - Student: `server/models/UserModel/Students/StudentModel.js`
+    * Section-based access
+    * Community participation rights
+
+#### Security Features:
+- CSRF protection
+- Rate limiting on auth endpoints
+- Secure password reset flow
+- Login activity logging
+
+### 2. Quiz System
+
+#### Core Components:
+- **AI-Powered Generation**:
+  - Integration with OpenAI API
+  - Context-aware question formulation
+  - Difficulty level customization
+  - Automatic answer validation
+
+- **Quiz Session Management**:
+  - Real-time participation tracking
+  - Timer-based question progression
+  - Instant scoring and feedback
+  - Performance analytics dashboard
+
+#### Implementation Details:
+- **Question Types**:
+  - Multiple choice (single/multi-select)
+  - True/False
+  - Short answer (AI-evaluated)
+  - Image-based questions
+
+- **Models**:
+  - Quiz (`server/models/Quizz/quizModel.js`):
+    * Metadata (title, description, duration)
+    * Subject/topic associations
+    * Access control settings
+  - QuizQuestion (`server/models/Quizz/QuizQuestionModel.js`):
+    * Question text and options
+    * Correct answer mapping
+    * Difficulty scoring
+    * AI generation parameters
+  - SubmitQuiz (`server/models/Quizz/SubmitQuizModel.js`):
+    * Student responses
+    * Scoring breakdown
+    * Time tracking
+    * Performance analytics
+
+- **Workflow**:
+  1. Teacher creates quiz template
+  2. AI generates questions based on parameters
+  3. Teacher reviews/edits questions
+  4. Quiz assigned to sections
+  5. Students complete quiz in session
+  6. Instant results and analytics
+
+#### Technical Features:
+- Real-time updates via WebSocket
+- Anti-cheating measures:
+  - Random question ordering
+  - Option shuffling
+  - Session monitoring
+- Bulk question import/export
+- Version history for quizzes
+
+#### API Endpoints:
+- POST /api/quizzes/generate - AI question generation
+- GET /api/quizzes/active - Current active quizzes
+- POST /api/quizzes/submit - Quiz submission
+- GET /api/quizzes/analytics/:quizId - Performance data
+
+### 3. Community Features
+#### Art Gallery
+- Model: `server/models/community/artGallery/artGalleryModel.js`
+- Routes: `server/routes/community/artgalleryRoutes.js`
+- Status workflow: pending → approved/rejected
+
+#### Spotlight
+- Model: `server/models/community/spotlight/spotlightModel.js`
+- Routes: `server/routes/community/spotlightRoutes.js`
+- Similar approval workflow as Art Gallery
+
+### 4. Chat System
+- Models:
+  - ChatGroup: `server/models/ChatGroup/ChatGroupModel.js`
+  - Message: `server/models/ChatGroup/messageModel.js`
+- Socket implementation: `server/socket.js`
+- Routes: `server/routes/chatgroup/chatRoutes.js`
+
+## Database Schema Highlights
+
+### User Models
+- CollegeAdmin: Manages colleges and departments
+- Teacher: Teaches subjects, creates quizzes
+- Student: Takes quizzes, participates in community
+
+### Quiz Models
+- Quiz: Contains metadata about quizzes
+- QuizQuestion: Stores individual questions
+- SubmitQuiz: Tracks student submissions
+
+### Community Models
+- ArtGallery: For sharing artistic works
+- Spotlight: For highlighting student/teacher achievements
+
+## Important Services
+
+### Quiz Generation Service
+- Location: `server/services/quizGenerationService.js`
+- Uses AI to generate quiz questions
+- Integrates with subject/topic system
+
+### Socket Service
+- Location: `server/socket.js`
+- Handles real-time chat functionality
+- Manages online status and notifications
+
+## API Endpoints
+
+### Auth Routes
+- POST /api/auth/register/[admin|teacher|student]
+- POST /api/auth/login
+- GET /api/auth/verify
+
+### Quiz Routes
+- GET /api/quizzes/stats/:teacherId
+- GET /api/quizzes/teacher/
+- GET /api/quizzes/:quizId
+- GET /api/quizzes/quizlist/section/
+
+### Community Routes
+- GET /api/community/artgallery
+- POST /api/community/artgallery/upload
+- GET /api/community/artgallery/pending
+- PATCH /api/community/artgallery/:id/status
+
+## Frontend Architecture
+
+### State Management
+- Uses React context and custom hooks
+- Key stores:
+  - Auth: Manages user authentication state
+  - Socket: Handles real-time connections
+  - College: Manages college/department data
+
+### Key Components
+- DashboardLayout: Main application layout
+- Sidebar: Navigation component
+- Upload: Handles file uploads for community features
+
+## Deployment Considerations
+- Requires MongoDB database
+- Cloudinary integration for image uploads
+- Socket.io for real-time features
+- Environment variables needed for:
+  - JWT secret
+  - Cloudinary credentials
+  - Database connection
