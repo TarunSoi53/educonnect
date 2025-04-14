@@ -7,6 +7,7 @@ const submitQuizSchema = new mongoose.Schema({
     quizAnswers: [{
         questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'QuizQuestion', required: true },
         selectedAnswer: String,
+        correctAnswer: String,
         isCorrect: { type: Boolean, default: false },
     }],
     score: { type: Number, required: true },

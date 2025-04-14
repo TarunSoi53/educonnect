@@ -175,60 +175,82 @@ export const getQuizList = async (req, res) => {
 };
 export const userSubmitQuiz = async (req, res) => {
   try {
-    const { quizId,  quizAnswers } = req.body;
-    console.log("quizId",quizId)
-    console.log("quizAnswers",quizAnswers)
+      const { quizId, quizAnswers } = req.body;
+      const studentId = req.user._id;
+      const timeTaken = req.body.timeTaken || 0;
 
-    // Basic validation
-    if (!quizId  || !Array.isArray(quizAnswers)) {
-      return res.status(400).json({ message: 'Invalid submission data.' });
-    }
-
-    // Verify quiz exists
-    const quiz = await Quiz.findById(quizId);
-    if (!quiz) {
-      return res.status(404).json({ message: 'Quiz not found.' });
-    }
-    const quizQuestions = await QuizQuestion.find({ quizId })
-      .sort('questionNo');
-    console.log("quiz",quiz)
-    console.log("quizQuestions",quizQuestions)
-
-    let score = 0;
-    const processedAnswers = quizQuestions.map((question, index) => {
-      const submittedAnswer = quizAnswers.find(ans => ans.questionId === question._id.toString());
-      const selectedAnswer = submittedAnswer ? submittedAnswer.selectedAnswer : undefined;
-      const isCorrect = String(selectedAnswer) === String(question.correctAnswer); // Compare as strings
-      if (isCorrect) {
-        score++;
+      if (!quizId || !Array.isArray(quizAnswers)) {
+          return res.status(400).json({ message: 'Invalid submission data.' });
       }
-      return {
-        questionId: question._id,
-        selectedAnswer: question.options[selectedAnswer], // Get the text of the selected option
-        correctAnswer: question.options[question.correctAnswer], // Get the text of the correct option
-        isCorrect: isCorrect,
-      };
-    });
 
-    const timeTaken = req.body.timeTaken || 0; // Get time taken from request
-    
-console.log("processedAnswers",processedAnswers)
-    const submission = new SubmitQuiz({
-      quizId,
-      studentId:req.user._id,
-      quizAnsewrs: processedAnswers,
-      score,
-     
-      timeTaken,
-    });
+      const quiz = await Quiz.findById(quizId);
+      if (!quiz) {
+          return res.status(404).json({ message: 'Quiz not found.' });
+      }
 
-     const savedSubmission = await submission.save();
+      const quizQuestions = await QuizQuestion.find({ quizId }).select('_id correctAnswer options');
 
-     res.status(200).json({ message: 'Quiz submitted successfully!', score: savedSubmission.score, totalQuestions: quiz.quizQuestions.length, quizAnswers: savedSubmission.quizAnsewrs });
-    // res.status(200).json({ message: 'Quiz submitted successfully!'});
+      if (quizQuestions.length === 0) {
+          return res.status(400).json({ message: 'No questions found for this quiz.' });
+      }
+
+      let score = 0;
+      const processedAnswers = quizAnswers.map(submittedAnswer => {
+          const question = quizQuestions.find(q => q._id.toString() === submittedAnswer.questionId);
+          let isCorrect = false;
+          let correctAnswerText = '';
+          let selectedAnswerText = '';
+
+          if (question) {
+              console.log("Submitted Answer:", submittedAnswer.selectedAnswer);
+              console.log("Correct Answer Index from DB:", question.correctAnswer);
+              console.log("Question Options:", question.options);
+
+              const submittedLetter = submittedAnswer.selectedAnswer ? submittedAnswer.selectedAnswer.toLowerCase() : undefined;
+              const correctOptionIndex = question.correctAnswer;
+
+              selectedAnswerText = submittedLetter ? question.options[submittedLetter.charCodeAt(0) - 97] : undefined;
+              correctAnswerText = question.options[correctOptionIndex];
+
+              const correctLetter = String.fromCharCode(97 + parseInt(correctOptionIndex));
+              console.log("Submitted Letter:", submittedLetter);
+              console.log("Correct Letter:", correctLetter);
+
+              isCorrect = submittedLetter === correctLetter;
+              console.log("Is Correct:", isCorrect);
+
+              if (isCorrect) {
+                  score++;
+              }
+          }
+
+          return {
+              questionId: submittedAnswer.questionId,
+              selectedAnswer: selectedAnswerText,
+              correctAnswer: correctAnswerText,
+              isCorrect: isCorrect,
+          };
+      });
+
+      const submission = new SubmitQuiz({
+          quizId,
+          studentId,
+          quizAnswers: processedAnswers,
+          score,
+          timeTaken,
+      });
+
+      const savedSubmission = await submission.save();
+
+      res.status(200).json({
+          message: 'Quiz submitted successfully!',
+          score: savedSubmission.score,
+          totalQuestions: quizQuestions.length,
+          quizAnswers: savedSubmission.quizAnswers,
+      });
 
   } catch (error) {
-    console.error('Error submitting quiz:', error);
-    res.status(500).json({ message: 'Failed to submit quiz.' });
+      console.error('Error submitting quiz:', error);
+      res.status(500).json({ message: 'Failed to submit quiz.' });
   }
 };
